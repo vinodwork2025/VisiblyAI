@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "pages:build": "next build && bunx @cloudflare/next-on-pages",
+    "pages:build": "next build && bunx @cloudflare/next-on-pages && node -e \"require('fs').writeFileSync('.vercel/output/static/.assetsignore', '_worker.js')\"",
     "preview": "wrangler pages dev",
     "deploy": "wrangler pages deploy"
   },
