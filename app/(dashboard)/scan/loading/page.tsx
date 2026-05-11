@@ -1,15 +1,15 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, useState, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircle, Zap } from 'lucide-react'
 
 const SCAN_STEPS = [
-  { id: 1, label: 'Analyzing AI visibility signals…',     detail: 'Checking your presence across ChatGPT, Gemini & Perplexity'  },
-  { id: 2, label: 'Checking local authority…',            detail: 'Evaluating local SEO signals and geographic relevance'         },
-  { id: 3, label: 'Scanning trust indicators…',           detail: 'Reviewing reviews, citations, and E-E-A-T signals'             },
-  { id: 4, label: 'Comparing competitors…',               detail: 'Benchmarking your visibility against market competitors'       },
-  { id: 5, label: 'Generating AI recommendations…',       detail: 'Building your personalized AI visibility action plan'         },
+  { id: 1, label: 'Fetching your website data…',          detail: 'Reading robots.txt, llms.txt, and page structure'            },
+  { id: 2, label: 'Analyzing AI visibility signals…',     detail: 'Checking GPTBot, ClaudeBot, and PerplexityBot access'        },
+  { id: 3, label: 'Scanning trust & schema indicators…',  detail: 'Reviewing structured data, reviews, and E-E-A-T signals'     },
+  { id: 4, label: 'Comparing competitors…',               detail: 'Benchmarking your visibility against market competitors'      },
+  { id: 5, label: 'Generating AI recommendations…',       detail: 'Building your personalized AI visibility action plan'        },
 ]
 
 const STEP_DELAY = 1800
@@ -21,28 +21,75 @@ function LoadingContent() {
 
   const [activeStep, setActiveStep] = useState(0)
   const [done, setDone] = useState(false)
+  const navigatedRef = useRef(false)
+
+  function navigateTo(id: string) {
+    if (navigatedRef.current) return
+    navigatedRef.current = true
+    setDone(true)
+    setTimeout(() => router.push(`/results/${id}`), 1200)
+  }
 
   useEffect(() => {
-    if (!scanId) { router.push('/scan'); return }
-
-    const timers: ReturnType<typeof setTimeout>[] = []
-
-    SCAN_STEPS.forEach((_, i) => {
-      timers.push(
-        setTimeout(() => {
+    if (scanId) {
+      // Pre-computed scan — just animate then navigate
+      const timers: ReturnType<typeof setTimeout>[] = []
+      SCAN_STEPS.forEach((_, i) => {
+        timers.push(setTimeout(() => {
           setActiveStep(i + 1)
           if (i === SCAN_STEPS.length - 1) {
-            setTimeout(() => {
-              setDone(true)
-              setTimeout(() => router.push(`/results/${scanId}`), 1200)
-            }, 800)
+            setTimeout(() => navigateTo(scanId), 800)
           }
-        }, STEP_DELAY * (i + 1))
-      )
+        }, STEP_DELAY * (i + 1)))
+      })
+      return () => timers.forEach(clearTimeout)
+    }
+
+    // Real scan flow — call API in parallel with animation
+    const formStr = typeof window !== 'undefined' ? sessionStorage.getItem('pending_scan_form') : null
+    if (!formStr) { router.push('/scan'); return }
+
+    let resultId: string | null = null
+    let animationFinished = false
+
+    // Start API call immediately
+    fetch('/api/scan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: formStr,
+    })
+      .then(r => r.json())
+      .then(result => {
+        if (!result?.id) throw new Error('bad response')
+        sessionStorage.setItem(`scan_${result.id}`, JSON.stringify(result))
+        sessionStorage.setItem('last_scan_id', result.id)
+        resultId = result.id
+        if (animationFinished) navigateTo(result.id)
+      })
+      .catch(() => {
+        if (animationFinished) router.push('/scan')
+      })
+
+    // Run animation steps
+    const timers: ReturnType<typeof setTimeout>[] = []
+    SCAN_STEPS.forEach((_, i) => {
+      timers.push(setTimeout(() => {
+        setActiveStep(i + 1)
+        if (i === SCAN_STEPS.length - 1) {
+          setTimeout(() => {
+            animationFinished = true
+            if (resultId) {
+              navigateTo(resultId)
+            }
+            // If API not done yet, its .then() above will call navigateTo
+          }, 800)
+        }
+      }, STEP_DELAY * (i + 1)))
     })
 
     return () => timers.forEach(clearTimeout)
-  }, [scanId, router])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scanId])
 
   const progress = done ? 100 : Math.round((activeStep / SCAN_STEPS.length) * 100)
 
@@ -50,7 +97,6 @@ function LoadingContent() {
     <div className="min-h-screen mesh-bg flex flex-col items-center justify-center px-4 py-12">
       {/* Animated radar ring */}
       <div className="relative mb-12">
-        {/* Outer pulse rings */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-40 h-40 rounded-full border border-primary/10 animate-ping" style={{ animationDuration: '2s' }} />
         </div>
@@ -58,7 +104,6 @@ function LoadingContent() {
           <div className="w-32 h-32 rounded-full border border-primary/15 animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.3s' }} />
         </div>
 
-        {/* Spinning ring */}
         <div className="relative w-28 h-28">
           <svg className="absolute inset-0 w-full h-full animate-radar-spin" viewBox="0 0 100 100" fill="none">
             <circle cx="50" cy="50" r="46" stroke="oklch(0.76 0.14 177 / 10%)" strokeWidth="2" />
@@ -69,13 +114,9 @@ function LoadingContent() {
               strokeLinecap="round"
             />
           </svg>
-
-          {/* Center icon */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 ${
-              done
-                ? 'bg-primary/20 teal-glow'
-                : 'bg-card border border-primary/20'
+              done ? 'bg-primary/20 teal-glow' : 'bg-card border border-primary/20'
             }`}>
               {done ? (
                 <CheckCircle className="w-8 h-8 text-primary animate-scale-in" />
@@ -99,7 +140,7 @@ function LoadingContent() {
         <p className="text-sm text-muted-foreground">
           {done
             ? 'Redirecting you to your AI Visibility Report…'
-            : 'Our AI is analyzing your visibility across 5 platforms'
+            : 'Fetching live data from your website and competitor sites'
           }
         </p>
       </div>
@@ -121,7 +162,6 @@ function LoadingContent() {
               }`}
               style={{ animationDelay: `${i * 0.1}s` }}
             >
-              {/* Icon */}
               <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300 ${
                 isCompleted ? 'bg-primary'         :
                 isActive    ? 'bg-primary/20 border-2 border-primary' :
@@ -136,7 +176,6 @@ function LoadingContent() {
                 )}
               </div>
 
-              {/* Text */}
               <div className="flex-1 min-w-0">
                 <div className={`text-sm font-medium transition-colors ${
                   isCompleted ? 'text-primary' : isActive ? 'text-foreground' : 'text-muted-foreground'
@@ -150,7 +189,6 @@ function LoadingContent() {
                 )}
               </div>
 
-              {/* Time indicator */}
               {isCompleted && (
                 <div className="text-xs text-primary font-medium shrink-0 animate-fade-in">✓</div>
               )}
@@ -173,9 +211,8 @@ function LoadingContent() {
         </div>
       </div>
 
-      {/* Footer note */}
       <p className="text-xs text-muted-foreground mt-8 text-center max-w-xs">
-        Analyzing visibility signals across ChatGPT, Google AI, Gemini, Perplexity, and local AI search
+        Scanning live data from your website across ChatGPT, Google AI, Gemini, Perplexity, and local AI search
       </p>
     </div>
   )

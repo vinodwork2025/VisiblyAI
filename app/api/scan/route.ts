@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { runMockScan } from '@/lib/scan-engine'
+import { runRealScan, runMockScan } from '@/lib/scan-engine'
 import type { ScanFormData } from '@/types'
 
 export const runtime = 'edge'
@@ -12,13 +12,18 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const result = runMockScan(body)
-    return NextResponse.json(result)
+    try {
+      const result = await runRealScan(body)
+      return NextResponse.json(result)
+    } catch {
+      const result = runMockScan(body)
+      return NextResponse.json(result)
+    }
   } catch {
     return NextResponse.json({ error: 'Failed to process scan' }, { status: 500 })
   }
 }
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   return NextResponse.json({ status: 'VisiblyAI Scan API v1' })
 }

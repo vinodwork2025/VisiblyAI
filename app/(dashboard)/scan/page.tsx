@@ -7,7 +7,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { runMockScan } from '@/lib/scan-engine'
 import type { ScanFormData } from '@/types'
 
 const STEPS = [
@@ -61,15 +60,12 @@ export default function ScanPage() {
 
   function back() { setStep(s => s - 1) }
 
-  async function handleSubmit() {
+  function handleSubmit() {
     setLoading(true)
-    const result = runMockScan(form)
     if (typeof window !== 'undefined') {
-      sessionStorage.setItem(`scan_${result.id}`, JSON.stringify(result))
-      sessionStorage.setItem('last_scan_id', result.id)
+      sessionStorage.setItem('pending_scan_form', JSON.stringify(form))
     }
-    await new Promise(r => setTimeout(r, 400))
-    router.push(`/scan/loading?id=${result.id}`)
+    router.push('/scan/loading')
   }
 
   const progress = ((step - 1) / STEPS.length) * 100
@@ -206,13 +202,13 @@ export default function ScanPage() {
                 </div>
                 <Textarea
                   id="competitors"
-                  placeholder="e.g. Dallas Roofing Pros, Texas Roof Masters&#10;&#10;Separate with commas or new lines"
+                  placeholder="e.g. bestplumber.com, dallas-plumbers.com&#10;&#10;Enter URLs for live competitor analysis, or just names"
                   value={form.competitors}
                   onChange={e => update('competitors', e.target.value)}
                   className="bg-secondary border-border resize-none text-sm min-h-[120px]"
                 />
                 <p className="text-xs text-muted-foreground mt-2">
-                  Add up to 3 competitors to see how your AI visibility compares.
+                  Add URLs for live competitor scanning, or just names for estimated comparison.
                 </p>
               </div>
 
