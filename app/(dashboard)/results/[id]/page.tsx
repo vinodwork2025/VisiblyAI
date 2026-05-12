@@ -214,13 +214,31 @@ function ResultsContent() {
   useEffect(() => {
     const id = params.id as string
     if (!id) { router.push('/scan'); return }
+
     const raw = sessionStorage.getItem(`scan_${id}`)
     if (raw) {
-      try { setResult(JSON.parse(raw)) } catch { router.push('/scan') }
-    } else {
-      router.push('/scan')
+      try {
+        setResult(JSON.parse(raw))
+        setLoading(false)
+      } catch {
+        router.push('/scan')
+      }
+      return
     }
-    setLoading(false)
+
+    // Not in sessionStorage — try DB via API
+    fetch(`/api/scans/${id}`)
+      .then(r => r.ok ? r.json() : null)
+      .then((data: ScanResult | null) => {
+        if (data?.id) {
+          sessionStorage.setItem(`scan_${data.id}`, JSON.stringify(data))
+          setResult(data)
+        } else {
+          router.push('/scan')
+        }
+      })
+      .catch(() => router.push('/scan'))
+      .finally(() => setLoading(false))
   }, [params.id, router])
 
   if (loading || !result) {

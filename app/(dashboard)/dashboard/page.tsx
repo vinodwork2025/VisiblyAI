@@ -1,8 +1,66 @@
+export const dynamic = 'force-dynamic'
+
 import Link from 'next/link'
 import { Search, FileText, TrendingUp, AlertCircle, ArrowRight, Zap, Sparkles } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { createClient } from '@/lib/supabase-server'
 
-export default function DashboardPage() {
+interface ScanRow {
+  id: string
+  business_name: string
+  website_url: string
+  overall_score: number
+  grade: string
+  city: string
+  primary_service: string
+  created_at: string
+  problems?: unknown
+  quick_wins?: unknown
+}
+
+function gradeBg(grade: string) {
+  if (grade === 'A') return 'bg-primary/20 text-primary border-primary/30'
+  if (grade === 'B') return 'bg-chart-3/20 text-chart-3 border-chart-3/30'
+  if (grade === 'C') return 'bg-amber-accent/20 text-amber-accent border-amber-accent/30'
+  return 'bg-destructive/20 text-destructive border-destructive/30'
+}
+
+export default async function DashboardPage() {
+  let scans: ScanRow[] = []
+  let totalProblems = 0
+  let quickWinsCount = 0
+  let hasDb = false
+
+  if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    try {
+      const supabase = await createClient()
+      const { data: { user } } = await supabase.auth.getUser()
+
+      if (user) {
+        hasDb = true
+        const { data } = await supabase
+          .from('scans')
+          .select('id, business_name, website_url, overall_score, grade, city, primary_service, created_at, problems, quick_wins')
+          .eq('user_id', user.id)
+          .order('created_at', { ascending: false })
+          .limit(5)
+
+        if (data) {
+          scans = data as ScanRow[]
+          if (scans[0]) {
+            const probs = scans[0].problems as Array<{ severity: string }> | null
+            const qw = scans[0].quick_wins as unknown[] | null
+            totalProblems = probs?.filter(p => p.severity === 'critical' || p.severity === 'warning').length ?? 0
+            quickWinsCount = qw?.length ?? 0
+          }
+        }
+      }
+    } catch {}
+  }
+
+  const latestScore = scans[0]?.overall_score ?? null
+  const totalScans  = scans.length
+
   return (
     <div className="p-6 md:p-8 max-w-6xl mx-auto">
       {/* Header */}
@@ -12,18 +70,20 @@ export default function DashboardPage() {
           CiteCheck AI Trust Dashboard
         </div>
         <h1 className="font-heading font-black text-3xl md:text-4xl mb-2">
-          Welcome to CiteCheck
+          {scans.length > 0 ? `Welcome back` : 'Welcome to CiteCheck'}
         </h1>
         <p className="text-muted-foreground">
-          Run your first AI Trust Check to see how visible and trusted your business is across ChatGPT, Gemini, and more.
+          {scans.length > 0
+            ? `Your AI visibility snapshot across ChatGPT, Gemini, and more.`
+            : 'Run your first AI Trust Check to see how visible and trusted your business is.'}
         </p>
       </div>
 
-      {/* CTA Banner */}
-      <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 md:p-8 mb-8 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-primary/5 -translate-y-1/3 translate-x-1/3" />
-        <div className="relative">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      {/* CTA Banner — only show when no scans */}
+      {scans.length === 0 && (
+        <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 md:p-8 mb-8 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-primary/5 -translate-y-1/3 translate-x-1/3" />
+          <div className="relative flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <h2 className="font-heading font-black text-xl md:text-2xl mb-2">
                 Run your free AI Trust Check
@@ -41,15 +101,35 @@ export default function DashboardPage() {
             </Button>
           </div>
         </div>
-      </div>
+      )}
 
       {/* Stats grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Checks Run',          value: '0', icon: Search,      sub: 'Run your first check'       },
-          { label: 'AI Trust Score',      value: '—', icon: TrendingUp,  sub: 'No data yet'                },
-          { label: 'Trust Gaps Detected', value: '—', icon: AlertCircle, sub: 'Complete a check first'     },
-          { label: 'Quick Wins',          value: '—', icon: Zap,         sub: 'Actionable improvements'    },
+          {
+            label: 'Checks Run',
+            value: hasDb ? String(totalScans) : '0',
+            icon: Search,
+            sub: totalScans > 0 ? `${totalScans} scan${totalScans > 1 ? 's' : ''} completed` : 'Run your first check',
+          },
+          {
+            label: 'AI Trust Score',
+            value: latestScore !== null ? String(latestScore) : '—',
+            icon: TrendingUp,
+            sub: latestScore !== null ? (latestScore >= 65 ? 'Good standing' : 'Needs improvement') : 'No data yet',
+          },
+          {
+            label: 'Trust Gaps',
+            value: hasDb && totalScans > 0 ? String(totalProblems) : '—',
+            icon: AlertCircle,
+            sub: hasDb && totalScans > 0 ? 'Issues detected' : 'Complete a check first',
+          },
+          {
+            label: 'Quick Wins',
+            value: hasDb && totalScans > 0 ? String(quickWinsCount) : '—',
+            icon: Zap,
+            sub: hasDb && totalScans > 0 ? 'Actionable fixes ready' : 'Actionable improvements',
+          },
         ].map(({ label, value, icon: Icon, sub }) => (
           <div key={label} className="rounded-xl border border-border bg-card p-5">
             <div className="flex items-center justify-between mb-3">
@@ -72,15 +152,49 @@ export default function DashboardPage() {
               View all
             </Link>
           </div>
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4">
-              <FileText className="w-5 h-5 text-muted-foreground" />
+
+          {scans.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4">
+                <FileText className="w-5 h-5 text-muted-foreground" />
+              </div>
+              <p className="text-sm text-muted-foreground mb-4">
+                No checks yet. Run your first AI Trust Check to see results here.
+              </p>
+              <Button variant="outline" size="sm" asChild>
+                <Link href="/scan">Run a check</Link>
+              </Button>
             </div>
-            <p className="text-sm text-muted-foreground mb-4">No checks yet. Run your first AI Trust Check to see results here.</p>
-            <Button variant="outline" size="sm" asChild>
-              <Link href="/scan">Run a check</Link>
-            </Button>
-          </div>
+          ) : (
+            <div className="space-y-3">
+              {scans.slice(0, 4).map(scan => {
+                const date = new Date(scan.created_at).toLocaleDateString('en-US', {
+                  month: 'short', day: 'numeric',
+                })
+                return (
+                  <Link
+                    key={scan.id}
+                    href={`/results/${scan.id}`}
+                    className="flex items-center gap-3 rounded-lg p-3 hover:bg-muted/40 transition-colors group"
+                  >
+                    <div className={`w-9 h-9 rounded-lg border flex items-center justify-center text-xs font-bold shrink-0 ${gradeBg(scan.grade)}`}>
+                      {scan.grade}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-medium truncate">{scan.business_name}</div>
+                      <div className="text-xs text-muted-foreground truncate">
+                        {scan.city} · {scan.primary_service} · {date}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="font-heading font-bold text-sm text-primary">{scan.overall_score}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  </Link>
+                )
+              })}
+            </div>
+          )}
         </div>
 
         {/* Quick actions */}
@@ -97,7 +211,7 @@ export default function DashboardPage() {
               },
               {
                 icon: FileText,
-                label: 'View Reports',
+                label: 'View All Reports',
                 description: 'Access your saved check history',
                 href: '/reports',
               },
