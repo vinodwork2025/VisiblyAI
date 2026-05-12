@@ -15,6 +15,9 @@ import {
 import { Button } from '@/components/ui/button'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import {
+  OpenAIIcon, GeminiIcon, ClaudeIcon, PerplexityIcon, GoogleAIIcon,
+} from '@/components/BrandLogos'
 
 /* ─────────────────────────────────────────────
    ANIMATION VARIANTS
@@ -116,22 +119,20 @@ function HeroBackground() {
 
 /* Floating platform icon — used around dashboard card */
 function FloatIcon({
-  label, letter, bg, glow, border, size, style, delay, duration,
+  label, icon, bg, glow, border, size, style, delay, duration,
 }: {
-  label: string; letter: string; bg: string; glow: string;
+  label: string; icon: React.ReactNode; bg: string; glow: string;
   border?: string; size: number; style: React.CSSProperties;
   delay: number; duration: number;
 }) {
   return (
     <motion.div
       aria-label={label}
-      className="absolute z-20 rounded-full flex items-center justify-center font-heading font-black select-none cursor-default"
+      className="absolute z-20 rounded-full flex items-center justify-center select-none cursor-default"
       style={{
         ...style, width: size, height: size, background: bg,
         border: border ?? '1px solid rgba(255,255,255,0.14)',
         boxShadow: `0 0 28px ${glow}55, 0 4px 16px rgba(0,0,0,0.5)`,
-        fontSize: size * 0.34,
-        color: '#fff',
       }}
       initial={{ opacity: 0, scale: 0 }}
       animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
@@ -141,7 +142,7 @@ function FloatIcon({
         y:        { duration, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.4 },
       }}
     >
-      {letter}
+      {icon}
     </motion.div>
   )
 }
@@ -159,18 +160,32 @@ function HeroScoreCard() {
     { name: 'Vertex Group',   s: 43, user: false, bar: 'rgba(255,255,255,0.22)' },
   ]
 
-  const platforms = [
-    { name: 'ChatGPT',    letter: 'C', bg: '#10A37F', glow: '#10A37F' },
-    { name: 'Gemini',     letter: '✦', bg: 'linear-gradient(135deg,#4285F4,#8B5CF6)', glow: '#4285F4' },
-    { name: 'Perplexity', letter: 'P', bg: '#1A1230', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.50)' },
-    { name: 'Google AI',  letter: 'G', bg: 'linear-gradient(135deg,#EA4335 0%,#FBBC05 33%,#34A853 66%,#4285F4 100%)', glow: '#4285F4' },
+  const platforms: { name: string; icon: React.ReactNode; bg: string; glow: string; border?: string }[] = [
+    { name: 'ChatGPT',    icon: <OpenAIIcon size={16} />,   bg: '#10A37F', glow: '#10A37F' },
+    { name: 'Gemini',     icon: <GeminiIcon size={16} />,   bg: '#1a1a2e', glow: '#4285F4', border: '1px solid rgba(66,133,244,0.40)' },
+    { name: 'Perplexity', icon: <PerplexityIcon size={14} />, bg: '#1A1230', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.45)' },
+    { name: 'Google AI',  icon: <GoogleAIIcon size={16} />, bg: '#fff',    glow: '#4285F4' },
   ]
 
-  /* floating icon config */
+  /* floating icon config — orbit the card */
   const floaters: Parameters<typeof FloatIcon>[0][] = [
-    { label: 'ChatGPT',    letter: 'C', bg: '#10A37F', glow: '#10A37F', size: 56, style: { top: -28, right: -24 }, delay: 0.8,  duration: 6   },
-    { label: 'Google',     letter: 'G', bg: 'linear-gradient(135deg,#EA4335,#FBBC05,#34A853,#4285F4)', glow: '#4285F4', size: 44, style: { top: '38%', right: -52 }, delay: 1.1, duration: 7   },
-    { label: 'Perplexity', letter: 'P', bg: '#1A1230', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.55)', size: 40, style: { bottom: 56, right: -38 }, delay: 1.35, duration: 8 },
+    {
+      label: 'ChatGPT', bg: '#10A37F', glow: '#10A37F', size: 56,
+      icon: <OpenAIIcon size={26} />,
+      style: { top: -28, right: -24 }, delay: 0.8, duration: 6,
+    },
+    {
+      label: 'Claude', bg: 'linear-gradient(135deg,#D97706,#F59E0B)', glow: '#D97706', size: 46,
+      icon: <ClaudeIcon size={22} />,
+      style: { top: '36%', right: -52 }, delay: 1.1, duration: 7,
+    },
+    {
+      label: 'Perplexity', bg: '#1A1230', glow: '#9B5DE5',
+      border: '1px solid rgba(155,93,229,0.55)',
+      size: 40,
+      icon: <PerplexityIcon size={18} />,
+      style: { bottom: 56, right: -38 }, delay: 1.35, duration: 8,
+    },
   ]
 
   return (
@@ -323,21 +338,21 @@ function HeroScoreCard() {
               Visibility Access in Platforms
             </div>
             <div className="flex items-center gap-3">
-              {platforms.map(({ name, letter, bg, glow, border }, i) => (
+              {platforms.map(({ name, icon, bg, glow, border }, i) => (
                 <motion.div key={name} className="flex flex-col items-center gap-1.5"
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, delay: 1.85 + i * 0.07 }}
                 >
                   <div
-                    className="relative flex items-center justify-center rounded-full font-heading font-black text-white"
+                    className="relative flex items-center justify-center rounded-full text-white"
                     style={{
-                      width: 34, height: 34, background: bg, fontSize: 12,
+                      width: 34, height: 34, background: bg,
                       border: border ?? '1px solid rgba(255,255,255,0.15)',
                       boxShadow: `0 0 14px ${glow}55`,
                     }}
                   >
-                    {letter}
+                    {icon}
                     <div
                       className="absolute -bottom-0.5 -right-0.5 flex items-center justify-center rounded-full"
                       style={{ width: 13, height: 13, background: '#34d399', border: '1.5px solid rgba(0,0,0,0.35)' }}

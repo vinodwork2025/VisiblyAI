@@ -16,6 +16,9 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import type { ScanResult, Insight, Problem, Recommendation, QuickWin } from '@/types'
+import {
+  OpenAIIcon, GeminiIcon, PerplexityIcon, GoogleAIIcon,
+} from '@/components/BrandLogos'
 
 /* ─────────────────────────────────────────────
    ANIMATION VARIANTS
@@ -148,16 +151,22 @@ function ScoreBar({ label, score, delay = 0 }: { label: string; score: number; d
 /* ─────────────────────────────────────────────
    PLATFORM BADGE
 ───────────────────────────────────────────── */
+const PLATFORM_META: Record<string, { label: string; cls: string; icon?: React.ReactNode }> = {
+  chatgpt:     { label: 'ChatGPT',    cls: 'badge-chatgpt',    icon: <OpenAIIcon size={11} />    },
+  'google-ai': { label: 'Google AI',  cls: 'badge-google',     icon: <GoogleAIIcon size={11} />  },
+  gemini:      { label: 'Gemini',     cls: 'badge-gemini',     icon: <GeminiIcon size={11} />    },
+  perplexity:  { label: 'Perplexity', cls: 'badge-perplexity', icon: <PerplexityIcon size={10} /> },
+  local:       { label: 'Local AI',   cls: 'badge-local'                                          },
+}
+
 function PlatformBadge({ platform }: { platform: Insight['platform'] }) {
-  const map: Record<string, { label: string; cls: string }> = {
-    chatgpt:     { label: 'ChatGPT',    cls: 'badge-chatgpt'    },
-    'google-ai': { label: 'Google AI',  cls: 'badge-google'     },
-    gemini:      { label: 'Gemini',     cls: 'badge-gemini'     },
-    perplexity:  { label: 'Perplexity', cls: 'badge-perplexity' },
-    local:       { label: 'Local AI',   cls: 'badge-local'      },
-  }
-  const { label, cls } = map[platform] ?? { label: platform, cls: 'badge-local' }
-  return <span className={`${cls} text-xs px-2.5 py-1 rounded-full font-medium`}>{label}</span>
+  const { label, cls, icon } = PLATFORM_META[platform] ?? { label: platform, cls: 'badge-local' }
+  return (
+    <span className={`${cls} inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-medium`}>
+      {icon}
+      {label}
+    </span>
+  )
 }
 
 function ImpactBadge({ impact }: { impact: 'high' | 'medium' | 'low' }) {
