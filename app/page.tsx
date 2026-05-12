@@ -87,25 +87,25 @@ function AnimatedScore({ target, delay = 0 }: { target: number; delay?: number }
 function HeroBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden>
-      {/* Giant violet/purple dominant bloom — center-left */}
+      {/* Primary blue bloom — center-left */}
       <div
         className="absolute -top-32 -left-32 w-[920px] h-[920px] rounded-full animate-orb-1"
-        style={{ background: 'radial-gradient(circle, rgba(120,40,220,0.30) 0%, rgba(90,20,180,0.16) 35%, transparent 68%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(37,99,235,0.26) 0%, rgba(29,78,216,0.12) 35%, transparent 68%)' }}
       />
-      {/* Secondary teal orb — top-right */}
+      {/* Green accent orb — top-right */}
       <div
         className="absolute -top-48 -right-24 w-[660px] h-[660px] rounded-full animate-orb-2"
-        style={{ background: 'radial-gradient(circle, oklch(0.72 0.14 177 / 20%) 0%, oklch(0.60 0.16 177 / 8%) 45%, transparent 68%)' }}
+        style={{ background: 'radial-gradient(circle, rgba(5,150,105,0.18) 0%, rgba(5,150,105,0.06) 45%, transparent 68%)' }}
       />
-      {/* Purple fill bottom */}
+      {/* Blue fill bottom */}
       <div
         className="absolute -bottom-48 left-1/3 w-[800px] h-[560px] rounded-full animate-orb-3"
-        style={{ background: 'radial-gradient(ellipse, rgba(100,30,200,0.12) 0%, transparent 68%)' }}
+        style={{ background: 'radial-gradient(ellipse, rgba(37,99,235,0.09) 0%, transparent 68%)' }}
       />
       {/* Center horizontal band glow */}
       <div
         className="absolute top-[38%] left-0 right-0 h-64 -translate-y-1/2"
-        style={{ background: 'radial-gradient(ellipse 80% 100% at 30% 50%, rgba(110,35,210,0.14) 0%, transparent 70%)' }}
+        style={{ background: 'radial-gradient(ellipse 80% 100% at 30% 50%, rgba(37,99,235,0.11) 0%, transparent 70%)' }}
       />
       {/* Subtle dot grid */}
       <div className="absolute inset-0 dot-grid opacity-[0.10]" />
@@ -154,9 +154,9 @@ function HeroScoreCard() {
   const offset = circ * (1 - score / 100)
 
   const competitors = [
-    { name: 'Meridian Legal', s: 91, user: false, bar: 'linear-gradient(90deg,#00c07f,#00d9a0)' },
-    { name: 'Your Brand',     s: 87, user: true,  bar: 'linear-gradient(90deg,oklch(0.55 0.18 290),oklch(0.72 0.14 177))' },
-    { name: 'Apex Advisory',  s: 54, user: false, bar: 'linear-gradient(90deg,#7C3AED,#9B5DE5)' },
+    { name: 'Meridian Legal', s: 91, user: false, bar: 'linear-gradient(90deg,#059669,#10b981)' },
+    { name: 'Your Brand',     s: 87, user: true,  bar: 'linear-gradient(90deg,#2563eb,#10b981)' },
+    { name: 'Apex Advisory',  s: 54, user: false, bar: 'linear-gradient(90deg,#3b82f6,#6366f1)' },
     { name: 'Vertex Group',   s: 43, user: false, bar: 'rgba(255,255,255,0.22)' },
   ]
 
@@ -200,14 +200,14 @@ function HeroScoreCard() {
       {/* Ambient glow behind card */}
       <div className="absolute inset-0 -m-20 pointer-events-none">
         <div className="absolute inset-0 rounded-[5rem]"
-          style={{ background: 'radial-gradient(ellipse, oklch(0.72 0.14 177 / 22%) 0%, rgba(120,40,220,0.12) 45%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(ellipse, rgba(37,99,235,0.22) 0%, rgba(5,150,105,0.08) 45%, transparent 70%)' }}
         />
       </div>
 
       {/* Outer pulsing rings */}
       <div className="absolute -inset-6 rounded-[3rem] pointer-events-none">
-        <div className="absolute inset-0 rounded-[3rem] border animate-ring-pulse" style={{ borderColor: 'rgba(0,217,184,0.12)' }} />
-        <div className="absolute inset-4 rounded-[2.5rem] border animate-ring-pulse-slow" style={{ borderColor: 'rgba(120,40,220,0.10)' }} />
+        <div className="absolute inset-0 rounded-[3rem] border animate-ring-pulse" style={{ borderColor: 'rgba(37,99,235,0.18)' }} />
+        <div className="absolute inset-4 rounded-[2.5rem] border animate-ring-pulse-slow" style={{ borderColor: 'rgba(5,150,105,0.14)' }} />
       </div>
 
       {/* Floating platform icons */}
@@ -232,19 +232,19 @@ function HeroScoreCard() {
           <div className="h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
           {/* Header row */}
-          <div className="px-5 py-3.5 flex items-center justify-between"
+          <div className="px-6 py-4 flex items-center justify-between"
             style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
           >
             <div className="flex items-center gap-2">
               <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0"
-                style={{ background: 'oklch(0.72 0.14 177)' }}>
-                <Zap className="w-3.5 h-3.5" style={{ color: 'oklch(0.08 0.01 240)' }} />
+                style={{ background: '#2563eb' }}>
+                <Zap className="w-3.5 h-3.5 text-white" />
               </div>
               <span className="font-heading font-bold text-sm" style={{ color: 'rgba(255,255,255,0.92)' }}>CiteCheck</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#34d399' }}>Live Analysis</span>
+              <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#10b981' }}>Live Analysis</span>
             </div>
           </div>
 
@@ -252,19 +252,19 @@ function HeroScoreCard() {
           <div className="grid grid-cols-[1fr_1fr]" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
 
             {/* Left: Score gauge */}
-            <div className="p-5" style={{ borderRight: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="p-6" style={{ borderRight: '1px solid rgba(255,255,255,0.07)' }}>
               <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
                 AI Trust Score
               </div>
-              <div className="relative w-[96px] h-[96px] mx-auto mb-3">
+              <div className="relative w-[120px] h-[120px] mx-auto mb-3">
                 {/* Glow behind ring */}
-                <div className="absolute inset-0 rounded-full blur-xl opacity-35"
-                  style={{ background: 'oklch(0.72 0.14 177)' }} />
+                <div className="absolute inset-0 rounded-full blur-xl opacity-40"
+                  style={{ background: '#2563eb' }} />
                 <svg viewBox="0 0 100 100" className="w-full h-full relative z-10" style={{ transform: 'rotate(-90deg)' }}>
                   <defs>
                     <linearGradient id="hSG" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="oklch(0.55 0.20 290)" />
-                      <stop offset="100%" stopColor="oklch(0.80 0.14 177)" />
+                      <stop offset="0%" stopColor="#2563eb" />
+                      <stop offset="100%" stopColor="#10b981" />
                     </linearGradient>
                   </defs>
                   <circle cx="50" cy="50" r="42" fill="none" strokeWidth="6" stroke="rgba(255,255,255,0.07)" />
@@ -278,15 +278,15 @@ function HeroScoreCard() {
                 </svg>
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
                   <div
-                    className="font-heading font-black text-[32px] leading-none tabular-nums"
+                    className="font-heading font-black text-[38px] leading-none tabular-nums"
                     style={{
-                      background: 'linear-gradient(135deg, oklch(0.80 0.14 177), oklch(0.92 0.10 177))',
+                      background: 'linear-gradient(135deg, #60a5fa, #93c5fd)',
                       WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
                     }}
                   >
                     <AnimatedScore target={score} delay={1.0} />
                   </div>
-                  <div className="text-[9px] font-bold mt-0.5 uppercase tracking-widest" style={{ color: 'oklch(0.72 0.14 177)' }}>
+                  <div className="text-[9px] font-bold mt-0.5 uppercase tracking-widest" style={{ color: '#60a5fa' }}>
                     Excellent
                   </div>
                 </div>
@@ -297,7 +297,7 @@ function HeroScoreCard() {
             </div>
 
             {/* Right: Competitor bars */}
-            <div className="p-5">
+            <div className="p-6">
               <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
                 Competition Comparison
               </div>
@@ -310,7 +310,7 @@ function HeroScoreCard() {
                   >
                     <div
                       className="text-[10px] font-medium shrink-0 truncate"
-                      style={{ width: 78, color: user ? 'oklch(0.72 0.14 177)' : 'rgba(255,255,255,0.45)' }}
+                      style={{ width: 88, color: user ? '#60a5fa' : 'rgba(255,255,255,0.45)' }}
                     >
                       {name}
                     </div>
@@ -324,7 +324,7 @@ function HeroScoreCard() {
                     </div>
                     <div
                       className="text-[10px] font-bold tabular-nums shrink-0"
-                      style={{ width: 20, textAlign: 'right', color: user ? 'oklch(0.72 0.14 177)' : 'rgba(255,255,255,0.38)' }}
+                      style={{ width: 20, textAlign: 'right', color: user ? '#60a5fa' : 'rgba(255,255,255,0.38)' }}
                     >
                       {s}
                     </div>
@@ -335,7 +335,7 @@ function HeroScoreCard() {
           </div>
 
           {/* Platform visibility pills */}
-          <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="px-6 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
             <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
               Visibility Access in Platforms
             </div>
@@ -349,7 +349,7 @@ function HeroScoreCard() {
                   <div
                     className="relative flex items-center justify-center rounded-full text-white"
                     style={{
-                      width: 34, height: 34, background: bg,
+                      width: 38, height: 38, background: bg,
                       border: border ?? '1px solid rgba(255,255,255,0.15)',
                       boxShadow: `0 0 14px ${glow}55`,
                     }}
@@ -357,7 +357,7 @@ function HeroScoreCard() {
                     {icon}
                     <div
                       className="absolute -bottom-0.5 -right-0.5 flex items-center justify-center rounded-full"
-                      style={{ width: 13, height: 13, background: '#34d399', border: '1.5px solid rgba(0,0,0,0.35)' }}
+                      style={{ width: 13, height: 13, background: '#059669', border: '1.5px solid rgba(0,0,0,0.35)' }}
                     >
                       <CheckCircle className="w-2 h-2 text-white" />
                     </div>
@@ -370,13 +370,13 @@ function HeroScoreCard() {
 
           {/* Top recommendation footer */}
           <motion.div
-            className="px-5 py-3 flex items-start gap-2"
+            className="px-6 py-3.5 flex items-start gap-2"
             style={{ background: 'rgba(255,255,255,0.025)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5, delay: 2.0 }}
           >
-            <Sparkles className="w-3 h-3 shrink-0 mt-0.5" style={{ color: 'oklch(0.72 0.14 177)' }} />
+            <Sparkles className="w-3 h-3 shrink-0 mt-0.5" style={{ color: '#60a5fa' }} />
             <p className="text-[10px] leading-snug" style={{ color: 'rgba(255,255,255,0.55)' }}>
               <span className="font-semibold" style={{ color: 'rgba(255,255,255,0.75)' }}>Top Recommendation: </span>
               Add structured data markup to improve AI citation rate by up to 34%
@@ -425,7 +425,7 @@ function HeroSection() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
         {/* Two-column grid */}
-        <div className="grid lg:grid-cols-[1fr_480px] gap-12 xl:gap-16 items-center">
+        <div className="grid lg:grid-cols-[1fr_540px] gap-12 xl:gap-16 items-center">
 
           {/* ── LEFT ── */}
           <div className="flex flex-col gap-7">
@@ -439,9 +439,9 @@ function HeroSection() {
               <span
                 className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest"
                 style={{
-                  background: 'rgba(0,217,184,0.10)',
-                  border: '1px solid rgba(0,217,184,0.22)',
-                  color: 'oklch(0.72 0.14 177)',
+                  background: 'rgba(37,99,235,0.12)',
+                  border: '1px solid rgba(37,99,235,0.30)',
+                  color: '#60a5fa',
                 }}
               >
                 <Sparkles className="w-3 h-3 shrink-0" />
@@ -490,9 +490,9 @@ function HeroSection() {
                   <button
                     className="group relative inline-flex items-center gap-2.5 h-[52px] px-8 text-[15px] font-bold rounded-xl overflow-hidden"
                     style={{
-                      background: 'linear-gradient(135deg, oklch(0.68 0.16 177) 0%, oklch(0.58 0.18 177) 50%, oklch(0.55 0.20 200) 100%)',
+                      background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 60%, #059669 100%)',
                       color: '#fff',
-                      boxShadow: '0 4px 24px oklch(0.72 0.14 177 / 40%), 0 1px 4px oklch(0.72 0.14 177 / 24%)',
+                      boxShadow: '0 4px 24px rgba(37,99,235,0.50), 0 1px 4px rgba(37,99,235,0.24)',
                     }}
                   >
                     <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
@@ -547,9 +547,9 @@ function HeroSection() {
                 >
                   <div
                     className="w-4.5 h-4.5 rounded-full flex items-center justify-center shrink-0"
-                    style={{ background: 'rgba(0,217,184,0.14)', border: '1px solid rgba(0,217,184,0.25)' }}
+                    style={{ background: 'rgba(37,99,235,0.14)', border: '1px solid rgba(37,99,235,0.28)' }}
                   >
-                    <Icon className="w-2.5 h-2.5" style={{ color: 'oklch(0.72 0.14 177)' }} />
+                    <Icon className="w-2.5 h-2.5" style={{ color: '#60a5fa' }} />
                   </div>
                   <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.50)' }}>{text}</span>
                 </motion.div>
@@ -586,7 +586,7 @@ function HeroSection() {
           </div>
 
           {/* ── RIGHT: Dashboard card ── */}
-          <div className="hidden lg:block">
+          <div className="hidden md:block max-w-[480px] mx-auto lg:max-w-none">
             <HeroScoreCard />
           </div>
         </div>
@@ -613,9 +613,9 @@ function HeroSection() {
             >
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center mb-4"
-                style={{ background: 'rgba(0,217,184,0.12)', border: '1px solid rgba(0,217,184,0.22)' }}
+                style={{ background: 'rgba(37,99,235,0.12)', border: '1px solid rgba(37,99,235,0.22)' }}
               >
-                <Icon className="w-4.5 h-4.5" style={{ color: 'oklch(0.72 0.14 177)' }} />
+                <Icon className="w-4.5 h-4.5" style={{ color: '#60a5fa' }} />
               </div>
               <div className="font-heading font-bold text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.88)' }}>{title}</div>
               <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.42)' }}>{desc}</p>

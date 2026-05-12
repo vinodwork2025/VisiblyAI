@@ -472,11 +472,11 @@
 .gradient-text-shimmer {
   background: linear-gradient(
     90deg,
-    oklch(0.55 0.18 290) 0%,
-    oklch(0.72 0.14 177) 25%,
-    oklch(0.84 0.16 177) 50%,
-    oklch(0.72 0.14 177) 75%,
-    oklch(0.55 0.18 290) 100%
+    #2563eb 0%,
+    #10b981 25%,
+    #60a5fa 50%,
+    #10b981 75%,
+    #2563eb 100%
   );
   background-size: 200% auto;
   animation: shimmer-text 4s linear infinite;
