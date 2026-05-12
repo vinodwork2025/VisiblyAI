@@ -66,246 +66,305 @@ function StaggerGrid({ children, className = '' }: { children: React.ReactNode; 
    HERO COMPONENTS
 ───────────────────────────────────────────── */
 
-/* Animated background orbs */
-function HeroBackground() {
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden>
-      {/* Primary teal orb — top-left */}
-      <div
-        className="absolute -top-64 -left-64 w-[700px] h-[700px] rounded-full animate-orb-1"
-        style={{ background: 'radial-gradient(circle, oklch(0.72 0.14 177 / 16%) 0%, transparent 68%)' }}
-      />
-      {/* Indigo/purple orb — bottom-right */}
-      <div
-        className="absolute -bottom-48 -right-48 w-[650px] h-[650px] rounded-full animate-orb-2"
-        style={{ background: 'radial-gradient(circle, oklch(0.60 0.20 290 / 13%) 0%, transparent 68%)' }}
-      />
-      {/* Amber accent — top-right */}
-      <div
-        className="absolute -top-32 right-1/4 w-[380px] h-[380px] rounded-full animate-orb-3"
-        style={{ background: 'radial-gradient(circle, oklch(0.72 0.16 73 / 8%) 0%, transparent 68%)' }}
-      />
-      {/* Subtle center bloom */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-30"
-        style={{ background: 'radial-gradient(ellipse, oklch(0.72 0.14 177 / 8%) 0%, transparent 70%)' }}
-      />
-      {/* Dot grid */}
-      <div className="absolute inset-0 dot-grid opacity-[0.22]" />
-      {/* Scattered network nodes */}
-      {[
-        { top: '18%', left: '12%', size: 3, delay: 0 },
-        { top: '62%', left: '8%',  size: 2, delay: 1.2 },
-        { top: '35%', left: '88%', size: 3, delay: 0.6 },
-        { top: '72%', left: '82%', size: 2, delay: 2 },
-        { top: '14%', left: '55%', size: 2, delay: 1.8 },
-        { top: '85%', left: '45%', size: 3, delay: 0.9 },
-      ].map((node, i) => (
-        <motion.div
-          key={i}
-          className="absolute rounded-full bg-primary/50"
-          style={{ top: node.top, left: node.left, width: node.size, height: node.size }}
-          animate={{ opacity: [0.3, 0.9, 0.3], scale: [1, 1.6, 1] }}
-          transition={{ duration: 3 + i * 0.5, repeat: Infinity, ease: 'easeInOut', delay: node.delay }}
-        />
-      ))}
-    </div>
-  )
-}
-
 /* Animated score count-up */
 function AnimatedScore({ target, delay = 0 }: { target: number; delay?: number }) {
   const count = useMotionValue(0)
   const rounded = useTransform(count, (v) => Math.round(v))
   const ref = useRef<HTMLSpanElement>(null)
   const inView = useInView(ref as React.RefObject<Element>, { once: true })
-
   useEffect(() => {
     if (!inView) return
-    const controls = animate(count, target, {
-      duration: 2,
-      delay,
-      ease: [0.22, 1, 0.36, 1],
-    })
+    const controls = animate(count, target, { duration: 2, delay, ease: [0.22, 1, 0.36, 1] })
     return controls.stop
   }, [inView, count, target, delay])
-
   return <motion.span ref={ref}>{rounded}</motion.span>
 }
 
-/* Hero dashboard card — right side */
-function HeroScoreCard() {
-  const circumference = 2 * Math.PI * 52
-  const score = 87
-  const offset = circumference * (1 - score / 100)
+/* Dramatic dark background — violet + teal blooms */
+function HeroBackground() {
+  return (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none" aria-hidden>
+      {/* Giant violet/purple dominant bloom — center-left */}
+      <div
+        className="absolute -top-32 -left-32 w-[920px] h-[920px] rounded-full animate-orb-1"
+        style={{ background: 'radial-gradient(circle, rgba(120,40,220,0.30) 0%, rgba(90,20,180,0.16) 35%, transparent 68%)' }}
+      />
+      {/* Secondary teal orb — top-right */}
+      <div
+        className="absolute -top-48 -right-24 w-[660px] h-[660px] rounded-full animate-orb-2"
+        style={{ background: 'radial-gradient(circle, oklch(0.72 0.14 177 / 20%) 0%, oklch(0.60 0.16 177 / 8%) 45%, transparent 68%)' }}
+      />
+      {/* Purple fill bottom */}
+      <div
+        className="absolute -bottom-48 left-1/3 w-[800px] h-[560px] rounded-full animate-orb-3"
+        style={{ background: 'radial-gradient(ellipse, rgba(100,30,200,0.12) 0%, transparent 68%)' }}
+      />
+      {/* Center horizontal band glow */}
+      <div
+        className="absolute top-[38%] left-0 right-0 h-64 -translate-y-1/2"
+        style={{ background: 'radial-gradient(ellipse 80% 100% at 30% 50%, rgba(110,35,210,0.14) 0%, transparent 70%)' }}
+      />
+      {/* Subtle dot grid */}
+      <div className="absolute inset-0 dot-grid opacity-[0.10]" />
+      {/* Top glass line */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/12 to-transparent" />
+      {/* Bottom fade-out */}
+      <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-[oklch(0.065_0.022_280)] to-transparent" />
+    </div>
+  )
+}
 
-  const platforms = [
-    { name: 'ChatGPT',          status: 'Visible',      pct: 92, green: true  },
-    { name: 'Google AI',        status: 'Strong',       pct: 78, green: true  },
-    { name: 'Gemini',           status: 'Moderate',     pct: 54, green: false },
-    { name: 'Perplexity',       status: 'Low Visibility', pct: 31, green: false },
-  ]
+/* Floating platform icon — used around dashboard card */
+function FloatIcon({
+  label, letter, bg, glow, border, size, style, delay, duration,
+}: {
+  label: string; letter: string; bg: string; glow: string;
+  border?: string; size: number; style: React.CSSProperties;
+  delay: number; duration: number;
+}) {
+  return (
+    <motion.div
+      aria-label={label}
+      className="absolute z-20 rounded-full flex items-center justify-center font-heading font-black select-none cursor-default"
+      style={{
+        ...style, width: size, height: size, background: bg,
+        border: border ?? '1px solid rgba(255,255,255,0.14)',
+        boxShadow: `0 0 28px ${glow}55, 0 4px 16px rgba(0,0,0,0.5)`,
+        fontSize: size * 0.34,
+        color: '#fff',
+      }}
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1, y: [0, -10, 0] }}
+      transition={{
+        opacity:  { duration: 0.4, delay },
+        scale:    { duration: 0.55, delay, ease: [0.34, 1.56, 0.64, 1] },
+        y:        { duration, repeat: Infinity, ease: 'easeInOut', delay: delay + 0.4 },
+      }}
+    >
+      {letter}
+    </motion.div>
+  )
+}
+
+/* Dashboard card — right column */
+function HeroScoreCard() {
+  const circ = 2 * Math.PI * 42   // ≈ 263.9
+  const score = 87
+  const offset = circ * (1 - score / 100)
 
   const competitors = [
-    { name: 'Meridian Legal',  score: 91, isTop: true  },
-    { name: 'Your Brand',      score: 87, isUser: true },
-    { name: 'Apex Advisory',   score: 54               },
-    { name: 'Vertex Group',    score: 43               },
+    { name: 'Meridian Legal', s: 91, user: false, bar: 'linear-gradient(90deg,#00c07f,#00d9a0)' },
+    { name: 'Your Brand',     s: 87, user: true,  bar: 'linear-gradient(90deg,oklch(0.55 0.18 290),oklch(0.72 0.14 177))' },
+    { name: 'Apex Advisory',  s: 54, user: false, bar: 'linear-gradient(90deg,#7C3AED,#9B5DE5)' },
+    { name: 'Vertex Group',   s: 43, user: false, bar: 'rgba(255,255,255,0.22)' },
+  ]
+
+  const platforms = [
+    { name: 'ChatGPT',    letter: 'C', bg: '#10A37F', glow: '#10A37F' },
+    { name: 'Gemini',     letter: '✦', bg: 'linear-gradient(135deg,#4285F4,#8B5CF6)', glow: '#4285F4' },
+    { name: 'Perplexity', letter: 'P', bg: '#1A1230', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.50)' },
+    { name: 'Google AI',  letter: 'G', bg: 'linear-gradient(135deg,#EA4335 0%,#FBBC05 33%,#34A853 66%,#4285F4 100%)', glow: '#4285F4' },
+  ]
+
+  /* floating icon config */
+  const floaters: Parameters<typeof FloatIcon>[0][] = [
+    { label: 'ChatGPT',    letter: 'C', bg: '#10A37F', glow: '#10A37F', size: 56, style: { top: -28, right: -24 }, delay: 0.8,  duration: 6   },
+    { label: 'Google',     letter: 'G', bg: 'linear-gradient(135deg,#EA4335,#FBBC05,#34A853,#4285F4)', glow: '#4285F4', size: 44, style: { top: '38%', right: -52 }, delay: 1.1, duration: 7   },
+    { label: 'Perplexity', letter: 'P', bg: '#1A1230', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.55)', size: 40, style: { bottom: 56, right: -38 }, delay: 1.35, duration: 8 },
   ]
 
   return (
     <motion.div
       className="relative"
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.9, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, x: 48, y: 16 }}
+      animate={{ opacity: 1, x: 0, y: 0 }}
+      transition={{ duration: 1.0, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
     >
-      {/* Outer glow rings */}
-      <div className="absolute inset-0 -m-8 rounded-[3rem] pointer-events-none">
-        <div className="absolute inset-0 rounded-[3rem] border border-primary/12 animate-ring-pulse" />
-        <div className="absolute inset-4 rounded-[2.5rem] border border-primary/8 animate-ring-pulse-slow" />
+      {/* Ambient glow behind card */}
+      <div className="absolute inset-0 -m-20 pointer-events-none">
+        <div className="absolute inset-0 rounded-[5rem]"
+          style={{ background: 'radial-gradient(ellipse, oklch(0.72 0.14 177 / 22%) 0%, rgba(120,40,220,0.12) 45%, transparent 70%)' }}
+        />
       </div>
+
+      {/* Outer pulsing rings */}
+      <div className="absolute -inset-6 rounded-[3rem] pointer-events-none">
+        <div className="absolute inset-0 rounded-[3rem] border animate-ring-pulse" style={{ borderColor: 'rgba(0,217,184,0.12)' }} />
+        <div className="absolute inset-4 rounded-[2.5rem] border animate-ring-pulse-slow" style={{ borderColor: 'rgba(120,40,220,0.10)' }} />
+      </div>
+
+      {/* Floating platform icons */}
+      {floaters.map(f => <FloatIcon key={f.label} {...f} />)}
 
       {/* Floating motion wrapper */}
       <motion.div
-        animate={{ y: [0, -14, 0] }}
+        animate={{ y: [0, -13, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
       >
-        {/* Main glass card */}
-        <div className="hero-glass rounded-3xl p-6 relative overflow-hidden">
+        {/* Glass card */}
+        <div
+          className="rounded-3xl overflow-hidden"
+          style={{
+            background: 'linear-gradient(145deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%)',
+            backdropFilter: 'blur(48px) saturate(1.5)',
+            border: '1px solid rgba(255,255,255,0.11)',
+            boxShadow: '0 40px 120px rgba(0,0,0,0.70), 0 0 0 1px rgba(255,255,255,0.06), inset 0 1px 0 rgba(255,255,255,0.12)',
+          }}
+        >
+          {/* Top accent line */}
+          <div className="h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
 
-          {/* Inner top gradient accent */}
-          <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-24 rounded-full blur-2xl opacity-20"
-            style={{ background: 'oklch(0.72 0.14 177 / 60%)' }}
-          />
-
-          {/* Card header */}
-          <div className="flex items-center justify-between mb-5 relative">
-            <div>
-              <div className="flex items-center gap-1.5 mb-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] font-semibold text-emerald-500 uppercase tracking-widest">Live analysis</span>
+          {/* Header row */}
+          <div className="px-5 py-3.5 flex items-center justify-between"
+            style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+          >
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0"
+                style={{ background: 'oklch(0.72 0.14 177)' }}>
+                <Zap className="w-3.5 h-3.5" style={{ color: 'oklch(0.08 0.01 240)' }} />
               </div>
-              <div className="font-heading font-bold text-sm text-foreground">Vertex & Associates</div>
+              <span className="font-heading font-bold text-sm" style={{ color: 'rgba(255,255,255,0.92)' }}>CiteCheck</span>
             </div>
-            <div className="badge-local text-[10px] px-2.5 py-1 rounded-full font-bold tracking-wide">
-              CiteCheck Report
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#34d399' }}>Live Analysis</span>
             </div>
           </div>
 
-          {/* Score gauge */}
-          <div className="flex items-center justify-center mb-5 relative">
-            <div className="relative w-36 h-36">
-              {/* Glow behind gauge */}
-              <div className="absolute inset-0 rounded-full blur-xl opacity-20"
-                style={{ background: 'oklch(0.72 0.14 177 / 80%)' }}
-              />
-              <svg viewBox="0 0 120 120" className="w-full h-full relative z-10">
-                <defs>
-                  <linearGradient id="gaugeGrad" x1="1" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="oklch(0.72 0.14 177)" />
-                    <stop offset="50%" stopColor="oklch(0.76 0.16 200)" />
-                    <stop offset="100%" stopColor="oklch(0.65 0.18 290)" />
-                  </linearGradient>
-                </defs>
-                {/* Track */}
-                <circle cx="60" cy="60" r="52" fill="none" strokeWidth="7"
-                  stroke="oklch(0.5 0.01 240 / 20%)" />
-                {/* Animated arc */}
-                <motion.circle
-                  cx="60" cy="60" r="52"
-                  fill="none"
-                  stroke="url(#gaugeGrad)"
-                  strokeWidth="7"
-                  strokeLinecap="round"
-                  strokeDasharray={circumference}
-                  initial={{ strokeDashoffset: circumference }}
-                  animate={{ strokeDashoffset: offset }}
-                  transition={{ duration: 2.2, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                  transform="rotate(-90 60 60)"
-                />
-              </svg>
-              {/* Score number */}
-              <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
-                <motion.div
-                  className="font-heading font-black text-4xl gradient-text leading-none tabular-nums"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 1.4, ease: [0.34, 1.56, 0.64, 1] }}
-                >
-                  <AnimatedScore target={score} delay={0.9} />
-                </motion.div>
-                <div className="text-[10px] text-primary font-semibold mt-0.5 uppercase tracking-widest">Excellent</div>
-              </div>
-            </div>
-          </div>
+          {/* Main split — score left / competitors right */}
+          <div className="grid grid-cols-[1fr_1fr]" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
 
-          {/* Platform visibility */}
-          <div className="mb-5">
-            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-3">Platform Visibility</div>
-            <div className="space-y-2">
-              {platforms.map(({ name, status, pct, green }, i) => (
-                <motion.div
-                  key={name}
-                  className="flex items-center gap-3"
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.4, delay: 1.4 + i * 0.07, ease: 'easeOut' }}
-                >
-                  <div className="w-24 text-xs text-muted-foreground shrink-0 font-medium truncate">{name}</div>
-                  <div className="flex-1 h-1.5 rounded-full bg-secondary/50 overflow-hidden">
-                    <motion.div
-                      className={`h-full rounded-full ${green ? 'bg-gradient-to-r from-primary to-cyan-400' : 'bg-gradient-to-r from-muted-foreground/40 to-muted-foreground/20'}`}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${pct}%` }}
-                      transition={{ duration: 1.2, delay: 1.5 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    />
+            {/* Left: Score gauge */}
+            <div className="p-5" style={{ borderRight: '1px solid rgba(255,255,255,0.07)' }}>
+              <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                AI Trust Score
+              </div>
+              <div className="relative w-[96px] h-[96px] mx-auto mb-3">
+                {/* Glow behind ring */}
+                <div className="absolute inset-0 rounded-full blur-xl opacity-35"
+                  style={{ background: 'oklch(0.72 0.14 177)' }} />
+                <svg viewBox="0 0 100 100" className="w-full h-full relative z-10" style={{ transform: 'rotate(-90deg)' }}>
+                  <defs>
+                    <linearGradient id="hSG" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="oklch(0.55 0.20 290)" />
+                      <stop offset="100%" stopColor="oklch(0.80 0.14 177)" />
+                    </linearGradient>
+                  </defs>
+                  <circle cx="50" cy="50" r="42" fill="none" strokeWidth="6" stroke="rgba(255,255,255,0.07)" />
+                  <motion.circle
+                    cx="50" cy="50" r="42" fill="none" stroke="url(#hSG)"
+                    strokeWidth="6" strokeLinecap="round" strokeDasharray={circ}
+                    initial={{ strokeDashoffset: circ }}
+                    animate={{ strokeDashoffset: offset }}
+                    transition={{ duration: 2.4, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-20">
+                  <div
+                    className="font-heading font-black text-[32px] leading-none tabular-nums"
+                    style={{
+                      background: 'linear-gradient(135deg, oklch(0.80 0.14 177), oklch(0.92 0.10 177))',
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    <AnimatedScore target={score} delay={1.0} />
                   </div>
-                  <span className={`text-[10px] font-semibold shrink-0 w-20 text-right ${green ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {status}
-                  </span>
+                  <div className="text-[9px] font-bold mt-0.5 uppercase tracking-widest" style={{ color: 'oklch(0.72 0.14 177)' }}>
+                    Excellent
+                  </div>
+                </div>
+              </div>
+              <p className="text-[9px] text-center leading-snug" style={{ color: 'rgba(255,255,255,0.35)' }}>
+                More visible than {score}%<br />of businesses in your niche
+              </p>
+            </div>
+
+            {/* Right: Competitor bars */}
+            <div className="p-5">
+              <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
+                Competition Comparison
+              </div>
+              <div className="space-y-2.5">
+                {competitors.map(({ name, s, user, bar }, i) => (
+                  <motion.div key={name} className="flex items-center gap-2"
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.4, delay: 1.3 + i * 0.08 }}
+                  >
+                    <div
+                      className="text-[10px] font-medium shrink-0 truncate"
+                      style={{ width: 78, color: user ? 'oklch(0.72 0.14 177)' : 'rgba(255,255,255,0.45)' }}
+                    >
+                      {name}
+                    </div>
+                    <div className="flex-1 rounded-full overflow-hidden" style={{ height: 5, background: 'rgba(255,255,255,0.07)' }}>
+                      <motion.div
+                        style={{ height: '100%', borderRadius: 9999, background: bar }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${s}%` }}
+                        transition={{ duration: 1.2, delay: 1.4 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                      />
+                    </div>
+                    <div
+                      className="text-[10px] font-bold tabular-nums shrink-0"
+                      style={{ width: 20, textAlign: 'right', color: user ? 'oklch(0.72 0.14 177)' : 'rgba(255,255,255,0.38)' }}
+                    >
+                      {s}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Platform visibility pills */}
+          <div className="px-5 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
+              Visibility Access in Platforms
+            </div>
+            <div className="flex items-center gap-3">
+              {platforms.map(({ name, letter, bg, glow, border }, i) => (
+                <motion.div key={name} className="flex flex-col items-center gap-1.5"
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.35, delay: 1.85 + i * 0.07 }}
+                >
+                  <div
+                    className="relative flex items-center justify-center rounded-full font-heading font-black text-white"
+                    style={{
+                      width: 34, height: 34, background: bg, fontSize: 12,
+                      border: border ?? '1px solid rgba(255,255,255,0.15)',
+                      boxShadow: `0 0 14px ${glow}55`,
+                    }}
+                  >
+                    {letter}
+                    <div
+                      className="absolute -bottom-0.5 -right-0.5 flex items-center justify-center rounded-full"
+                      style={{ width: 13, height: 13, background: '#34d399', border: '1.5px solid rgba(0,0,0,0.35)' }}
+                    >
+                      <CheckCircle className="w-2 h-2 text-white" />
+                    </div>
+                  </div>
+                  <span className="text-[8px] text-center font-medium" style={{ color: 'rgba(255,255,255,0.32)' }}>{name}</span>
                 </motion.div>
               ))}
             </div>
           </div>
 
-          {/* Divider */}
-          <div className="divider-fade mb-4" />
-
-          {/* Competitor comparison */}
-          <div>
-            <div className="text-[10px] font-semibold text-muted-foreground uppercase tracking-widest mb-3">AI Recommendation Ranking</div>
-            <div className="space-y-2">
-              {competitors.map(({ name, score: s, isUser, isTop }, i) => (
-                <motion.div
-                  key={name}
-                  className={`flex items-center gap-3 rounded-lg px-2.5 py-1.5 ${isUser ? 'bg-primary/10 border border-primary/20' : ''}`}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4, delay: 1.8 + i * 0.07 }}
-                >
-                  <div className={`w-20 text-xs shrink-0 font-medium truncate ${isUser ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {name}
-                  </div>
-                  <div className="flex-1 h-1.5 rounded-full bg-secondary/50 overflow-hidden">
-                    <motion.div
-                      className={`h-full rounded-full ${isUser ? 'bg-gradient-to-r from-primary to-cyan-400' : isTop ? 'bg-emerald-400' : 'bg-muted-foreground/30'}`}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${s}%` }}
-                      transition={{ duration: 1.2, delay: 1.9 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    />
-                  </div>
-                  <div className={`w-7 text-xs text-right font-heading font-bold tabular-nums shrink-0 ${isUser ? 'text-primary' : 'text-muted-foreground'}`}>
-                    {s}
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-
-          {/* Bottom gradient fade */}
-          <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-card/20 to-transparent rounded-b-3xl" />
+          {/* Top recommendation footer */}
+          <motion.div
+            className="px-5 py-3 flex items-start gap-2"
+            style={{ background: 'rgba(255,255,255,0.025)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 2.0 }}
+          >
+            <Sparkles className="w-3 h-3 shrink-0 mt-0.5" style={{ color: 'oklch(0.72 0.14 177)' }} />
+            <p className="text-[10px] leading-snug" style={{ color: 'rgba(255,255,255,0.55)' }}>
+              <span className="font-semibold" style={{ color: 'rgba(255,255,255,0.75)' }}>Top Recommendation: </span>
+              Add structured data markup to improve AI citation rate by up to 34%
+            </p>
+          </motion.div>
         </div>
       </motion.div>
     </motion.div>
@@ -316,38 +375,43 @@ function HeroScoreCard() {
    HERO SECTION
 ───────────────────────────────────────────── */
 function HeroSection() {
-  const headlineParts: { text: string; shimmer?: boolean }[] = [
-    { text: 'Understand how AI systems' },
-    { text: 'perceive', shimmer: true },
-    { text: 'and' },
-    { text: 'recommend', shimmer: true },
-    { text: 'your brand.' },
+  const words = [
+    { text: 'Understand how',   cls: '' },
+    { text: 'AI systems',       cls: '' },
+    { text: 'perceive',         cls: 'gradient-text-shimmer-purple' },
+    { text: 'and',              cls: '' },
+    { text: 'recommend',        cls: 'gradient-text-shimmer' },
+    { text: 'your brand.',      cls: '' },
   ]
 
   const trustItems = [
-    { icon: CheckCircle, text: 'No Credit Card Required' },
-    { icon: Zap,         text: '2-Minute Quick Scan'    },
-    { icon: TrendingUp,  text: 'Actionable Insights'    },
+    { icon: CheckCircle, text: 'No Credit Card' },
+    { icon: Zap,         text: '2 Minutes'      },
+    { icon: TrendingUp,  text: 'Automated Results' },
   ]
 
-  const logos = ['Zapier', 'Deel', 'Intuit', 'Brevo', 'MongoDB', 'Pearson']
+  const logos = ['zapier', 'deel', 'SaaS Academy', 'Pearson', 'intuit', 'hims', 'Brevo', 'MongoDB']
 
   const bottomCards = [
-    { icon: Eye,         title: 'AI Visibility Monitoring',    desc: 'Track how ChatGPT, Gemini, and Google AI discover and mention your brand across AI-powered search.' },
-    { icon: Shield,      title: 'AI Trust & Citation Signals', desc: 'Evaluate the technical signals that determine whether AI systems trust and recommend your business.' },
-    { icon: BarChart2,   title: 'Actionable Growth Insights',  desc: 'Prioritized recommendations built from your live site data — not generic templates.' },
+    { icon: Eye,       title: 'AI Visibility Monitoring',    desc: 'Track your real-time visibility across all major AI search tools including ChatGPT, Gemini, and Google.' },
+    { icon: Shield,    title: 'AI Trust & Citation Signals', desc: 'Get the exact factors that determine whether AI systems choose to recommend your business.' },
+    { icon: BarChart2, title: 'Actionable Growth Insights',  desc: 'Get detailed insights and recommendations to improve your AI recommendation authority score.' },
   ]
 
   return (
-    <section className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-16">
+    /* Force dark palette regardless of user theme */
+    <section
+      className="dark relative min-h-screen flex flex-col justify-center overflow-hidden pt-24 pb-16"
+      style={{ background: 'oklch(0.065 0.022 280)' }}
+    >
       <HeroBackground />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
         {/* Two-column grid */}
-        <div className="grid lg:grid-cols-[1fr_480px] gap-14 xl:gap-20 items-center">
+        <div className="grid lg:grid-cols-[1fr_480px] gap-12 xl:gap-16 items-center">
 
           {/* ── LEFT ── */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-7">
 
             {/* Badge */}
             <motion.div
@@ -355,33 +419,40 @@ function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <span className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full text-xs font-bold badge-local shadow-card shimmer-bg">
-                <Sparkles className="w-3.5 h-3.5 shrink-0" />
-                AI TRUST &amp; VISIBILITY INTELLIGENCE
+              <span
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[11px] font-bold uppercase tracking-widest"
+                style={{
+                  background: 'rgba(0,217,184,0.10)',
+                  border: '1px solid rgba(0,217,184,0.22)',
+                  color: 'oklch(0.72 0.14 177)',
+                }}
+              >
+                <Sparkles className="w-3 h-3 shrink-0" />
+                AI Trust &amp; Visibility Intelligence
               </span>
             </motion.div>
 
-            {/* Headline — word-by-word reveal */}
-            <div>
-              <h1 className="font-heading font-black text-5xl md:text-6xl xl:text-7xl leading-[1.0] tracking-tight">
-                {headlineParts.map((part, i) => (
-                  <motion.span
-                    key={i}
-                    className={`inline ${part.shimmer ? 'gradient-text-shimmer' : ''}`}
-                    initial={{ opacity: 0, y: 24, filter: 'blur(6px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.6, delay: 0.2 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    {part.text}{' '}
-                  </motion.span>
-                ))}
-              </h1>
-            </div>
+            {/* Headline — word-by-word blur reveal */}
+            <h1 className="font-heading font-black text-5xl md:text-6xl xl:text-[5rem] leading-[1.05] tracking-tight">
+              {words.map(({ text, cls }, i) => (
+                <motion.span
+                  key={i}
+                  className={`inline ${cls}`}
+                  style={cls ? {} : { color: 'rgba(255,255,255,0.95)' }}
+                  initial={{ opacity: 0, y: 28, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.65, delay: 0.18 + i * 0.09, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {text}{' '}
+                </motion.span>
+              ))}
+            </h1>
 
             {/* Subheadline */}
             <motion.p
-              className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg"
-              initial={{ opacity: 0, y: 20 }}
+              className="text-lg md:text-xl leading-relaxed max-w-[480px]"
+              style={{ color: 'rgba(255,255,255,0.55)' }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.65, delay: 0.75, ease: [0.22, 1, 0.36, 1] }}
             >
@@ -392,24 +463,24 @@ function HeroSection() {
             {/* CTAs */}
             <motion.div
               className="flex flex-col sm:flex-row items-start sm:items-center gap-4"
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.6, delay: 0.88, ease: [0.22, 1, 0.36, 1] }}
             >
               {/* Primary */}
               <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: 'spring', stiffness: 400, damping: 25 }}>
                 <Link href="/scan">
-                  <button className="group relative inline-flex items-center gap-2.5 h-13 px-8 text-base font-semibold text-primary-foreground rounded-xl overflow-hidden shadow-primary transition-shadow hover:shadow-[0_6px_28px_oklch(0.72_0.14_177_/_45%)]"
-                    style={{ background: 'linear-gradient(135deg, oklch(0.60 0.15 177) 0%, oklch(0.52 0.16 177) 50%, oklch(0.55 0.18 290) 100%)' }}
+                  <button
+                    className="group relative inline-flex items-center gap-2.5 h-[52px] px-8 text-[15px] font-bold rounded-xl overflow-hidden"
+                    style={{
+                      background: 'linear-gradient(135deg, oklch(0.68 0.16 177) 0%, oklch(0.58 0.18 177) 50%, oklch(0.55 0.20 200) 100%)',
+                      color: '#fff',
+                      boxShadow: '0 4px 24px oklch(0.72 0.14 177 / 40%), 0 1px 4px oklch(0.72 0.14 177 / 24%)',
+                    }}
                   >
-                    {/* Shimmer sweep on hover */}
-                    <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/15 to-transparent" />
-                    <span className="relative">Run Free AI Visibility Check</span>
-                    <motion.span
-                      className="relative"
-                      animate={{ x: [0, 3, 0] }}
-                      transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
-                    >
+                    <div className="absolute inset-0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                    <span className="relative">Run Free Scan</span>
+                    <motion.span className="relative" animate={{ x: [0, 3, 0] }} transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}>
                       <ArrowRight className="w-4 h-4" />
                     </motion.span>
                   </button>
@@ -418,24 +489,36 @@ function HeroSection() {
 
               {/* Secondary */}
               <Link href="#preview">
-                <button className="group inline-flex items-center gap-2 h-13 px-6 text-base font-medium text-muted-foreground hover:text-foreground transition-colors">
-                  <div className="w-8 h-8 rounded-full border border-border bg-card/80 flex items-center justify-center group-hover:border-primary/40 group-hover:bg-primary/8 transition-all duration-200">
-                    <Play className="w-3 h-3 fill-current ml-0.5" />
-                  </div>
-                  <span className="relative">
-                    View Sample Report
-                    <span className="absolute bottom-0 left-0 right-0 h-px bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
-                  </span>
+                <button
+                  className="group inline-flex items-center gap-2.5 h-[52px] px-6 text-[15px] font-medium rounded-xl transition-all duration-200"
+                  style={{
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                    color: 'rgba(255,255,255,0.75)',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.10)'
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.20)'
+                    e.currentTarget.style.color = 'rgba(255,255,255,0.95)'
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = 'rgba(255,255,255,0.06)'
+                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)'
+                    e.currentTarget.style.color = 'rgba(255,255,255,0.75)'
+                  }}
+                >
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  Sample Report
                 </button>
               </Link>
             </motion.div>
 
             {/* Trust indicators */}
             <motion.div
-              className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6"
+              className="flex flex-wrap items-center gap-x-6 gap-y-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 1.1 }}
+              transition={{ duration: 0.6, delay: 1.05 }}
             >
               {trustItems.map(({ icon: Icon, text }, i) => (
                 <motion.div
@@ -445,33 +528,38 @@ function HeroSection() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.4, delay: 1.1 + i * 0.1 }}
                 >
-                  <div className="w-5 h-5 rounded-full bg-primary/12 border border-primary/20 flex items-center justify-center shrink-0">
-                    <Icon className="w-2.5 h-2.5 text-primary" />
+                  <div
+                    className="w-4.5 h-4.5 rounded-full flex items-center justify-center shrink-0"
+                    style={{ background: 'rgba(0,217,184,0.14)', border: '1px solid rgba(0,217,184,0.25)' }}
+                  >
+                    <Icon className="w-2.5 h-2.5" style={{ color: 'oklch(0.72 0.14 177)' }} />
                   </div>
-                  <span className="text-sm text-muted-foreground font-medium">{text}</span>
+                  <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.50)' }}>{text}</span>
                 </motion.div>
               ))}
             </motion.div>
 
             {/* Logo cloud */}
             <motion.div
-              className="pt-2"
+              className="pt-1 border-t"
+              style={{ borderColor: 'rgba(255,255,255,0.08)' }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 1.4 }}
+              transition={{ duration: 0.7, delay: 1.35 }}
             >
-              <p className="text-xs text-muted-foreground/50 uppercase tracking-widest font-semibold mb-4">
+              <p className="text-[10px] font-semibold uppercase tracking-widest mt-4 mb-3" style={{ color: 'rgba(255,255,255,0.28)' }}>
                 Trusted by businesses worldwide
               </p>
-              <div className="flex flex-wrap items-center gap-x-8 gap-y-3">
+              <div className="flex flex-wrap items-center gap-x-7 gap-y-2.5">
                 {logos.map((name, i) => (
                   <motion.span
                     key={name}
-                    className="font-heading font-bold text-sm text-muted-foreground/30 hover:text-muted-foreground/60 cursor-default select-none transition-colors duration-200"
+                    className="font-heading font-bold text-sm cursor-default select-none transition-colors duration-200"
+                    style={{ color: 'rgba(255,255,255,0.22)' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.4, delay: 1.5 + i * 0.06 }}
-                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.4, delay: 1.45 + i * 0.06 }}
+                    whileHover={{ color: 'rgba(255,255,255,0.55)' } as never}
                   >
                     {name}
                   </motion.span>
@@ -491,21 +579,29 @@ function HeroSection() {
           className="grid sm:grid-cols-3 gap-4 mt-20"
           initial="hidden"
           animate="visible"
-          variants={{ visible: { transition: { staggerChildren: 0.12, delayChildren: 1.6 } } }}
+          variants={{ visible: { transition: { staggerChildren: 0.12, delayChildren: 1.65 } } }}
         >
           {bottomCards.map(({ icon: Icon, title, desc }) => (
             <motion.div
               key={title}
               variants={fadeUp}
-              className="hero-glass rounded-2xl p-6 hover-lift group cursor-default"
-              whileHover={{ scale: 1.02 }}
+              className="rounded-2xl p-5 hover-lift group cursor-default"
+              style={{
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                backdropFilter: 'blur(20px)',
+              }}
+              whileHover={{ scale: 1.02, background: 'rgba(255,255,255,0.06)' } as never}
               transition={{ type: 'spring', stiffness: 350, damping: 25 }}
             >
-              <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4 group-hover:bg-primary/18 transition-colors">
-                <Icon className="w-5 h-5 text-primary" />
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center mb-4"
+                style={{ background: 'rgba(0,217,184,0.12)', border: '1px solid rgba(0,217,184,0.22)' }}
+              >
+                <Icon className="w-4.5 h-4.5" style={{ color: 'oklch(0.72 0.14 177)' }} />
               </div>
-              <div className="font-heading font-bold text-sm text-foreground mb-1.5">{title}</div>
-              <p className="text-xs text-muted-foreground leading-relaxed">{desc}</p>
+              <div className="font-heading font-bold text-sm mb-1.5" style={{ color: 'rgba(255,255,255,0.88)' }}>{title}</div>
+              <p className="text-xs leading-relaxed" style={{ color: 'rgba(255,255,255,0.42)' }}>{desc}</p>
             </motion.div>
           ))}
         </motion.div>
@@ -517,7 +613,7 @@ function HeroSection() {
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut', delay: 2 }}
       >
-        <ChevronDown className="w-5 h-5 text-muted-foreground/40" />
+        <ChevronDown className="w-5 h-5" style={{ color: 'rgba(255,255,255,0.25)' }} />
       </motion.div>
     </section>
   )
