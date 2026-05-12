@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase-server'
+import { createServerClient } from '@supabase/ssr'
+
+export const runtime = 'edge'
 
 type Params = Promise<{ id: string }>
+
+function createSupabase(request: NextRequest) {
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return request.cookies.getAll() },
+        setAll()  {},
+      },
+    }
+  )
+}
 
 function dbRowToScanResult(row: Record<string, unknown>) {
   return {
@@ -23,14 +38,14 @@ function dbRowToScanResult(row: Record<string, unknown>) {
   }
 }
 
-export async function GET(_request: NextRequest, { params }: { params: Params }) {
+export async function GET(request: NextRequest, { params }: { params: Params }) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 })
   }
 
   try {
     const { id } = await params
-    const supabase = await createClient()
+    const supabase = createSupabase(request)
 
     const { data, error } = await supabase
       .from('scans')
@@ -48,14 +63,14 @@ export async function GET(_request: NextRequest, { params }: { params: Params })
   }
 }
 
-export async function DELETE(_request: NextRequest, { params }: { params: Params }) {
+export async function DELETE(request: NextRequest, { params }: { params: Params }) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     return NextResponse.json({ error: 'Not configured' }, { status: 400 })
   }
 
   try {
     const { id } = await params
-    const supabase = await createClient()
+    const supabase = createSupabase(request)
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {

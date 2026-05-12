@@ -1,13 +1,28 @@
-import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase-server'
+import { NextRequest, NextResponse } from 'next/server'
+import { createServerClient } from '@supabase/ssr'
 
-export async function GET() {
+export const runtime = 'edge'
+
+function createSupabase(request: NextRequest) {
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    {
+      cookies: {
+        getAll() { return request.cookies.getAll() },
+        setAll()  {},
+      },
+    }
+  )
+}
+
+export async function GET(request: NextRequest) {
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL) {
     return NextResponse.json({ scans: [] })
   }
 
   try {
-    const supabase = await createClient()
+    const supabase = createSupabase(request)
     const { data: { user } } = await supabase.auth.getUser()
 
     if (!user) {
