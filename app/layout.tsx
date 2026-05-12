@@ -1,17 +1,17 @@
 import type { Metadata } from 'next'
-import { Syne, DM_Sans } from 'next/font/google'
+import { Plus_Jakarta_Sans, Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from '@/components/Providers'
 
-const syne = Syne({
-  variable: '--font-syne',
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: '--font-jakarta',
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
   display: 'swap',
 })
 
-const dmSans = DM_Sans({
-  variable: '--font-dm-sans',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
@@ -47,7 +47,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${dmSans.variable}`}
+      className={`${plusJakarta.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
       <body className="min-h-screen antialiased">
