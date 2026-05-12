@@ -7,11 +7,11 @@ export interface ScanFormData {
 }
 
 export interface CategoryScores {
-  aiVisibility: number
+  aiRecommendationVisibility: number
   localAuthority: number
-  trustSignals: number
+  citationTrustSignals: number
   contentCoverage: number
-  technicalReadiness: number
+  technicalTrustReadiness: number
 }
 
 export interface CompetitorData {

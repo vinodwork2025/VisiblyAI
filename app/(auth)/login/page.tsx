@@ -62,7 +62,7 @@ export default function LoginPage() {
           <Zap className="w-4 h-4 text-primary-foreground" />
         </div>
         <span className="font-heading font-bold text-xl">
-          Visibly<span className="text-primary">AI</span>
+          Cite<span className="text-primary">Check</span>
         </span>
       </Link>
 
@@ -71,7 +71,7 @@ export default function LoginPage() {
         <div className="rounded-2xl border border-border bg-card p-8">
           <div className="mb-8">
             <h1 className="font-heading font-black text-2xl mb-2">Welcome back</h1>
-            <p className="text-sm text-muted-foreground">Sign in to access your AI visibility reports.</p>
+            <p className="text-sm text-muted-foreground">Sign in to access your AI trust and citation reports.</p>
           </div>
 
           {/* Google OAuth */}

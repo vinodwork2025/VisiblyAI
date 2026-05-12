@@ -9,13 +9,13 @@ export default function DashboardPage() {
       <div className="mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-local text-xs font-medium mb-4">
           <Sparkles className="w-3 h-3" />
-          AI Visibility Dashboard
+          CiteCheck AI Trust Dashboard
         </div>
         <h1 className="font-heading font-black text-3xl md:text-4xl mb-2">
-          Welcome to VisiblyAI
+          Welcome to CiteCheck
         </h1>
         <p className="text-muted-foreground">
-          Run your first AI Visibility Scan to see how your business appears across ChatGPT, Gemini, and more.
+          Run your first AI Trust Check to see how visible and trusted your business is across ChatGPT, Gemini, and more.
         </p>
       </div>
 
@@ -26,17 +26,17 @@ export default function DashboardPage() {
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div>
               <h2 className="font-heading font-black text-xl md:text-2xl mb-2">
-                Run your free AI Visibility Scan
+                Run your free AI Trust Check
               </h2>
               <p className="text-sm text-muted-foreground max-w-md">
-                Discover how visible your business is across ChatGPT, Google AI Overviews, Gemini,
+                Discover how trusted and visible your business is across ChatGPT, Google AI Overviews, Gemini,
                 and Perplexity. Takes under 60 seconds.
               </p>
             </div>
             <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90 shrink-0 teal-glow">
               <Link href="/scan">
                 <Search className="w-4 h-4 mr-2" />
-                Start New Scan
+                Start New Check
               </Link>
             </Button>
           </div>
@@ -46,10 +46,10 @@ export default function DashboardPage() {
       {/* Stats grid */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Scans Run',            value: '0',     icon: Search,      sub: 'Run your first scan'      },
-          { label: 'AI Visibility Score',  value: '—',     icon: TrendingUp,  sub: 'No data yet'              },
-          { label: 'Issues Detected',      value: '—',     icon: AlertCircle, sub: 'Complete a scan first'    },
-          { label: 'Quick Wins',           value: '—',     icon: Zap,         sub: 'Actionable improvements'  },
+          { label: 'Checks Run',          value: '0', icon: Search,      sub: 'Run your first check'       },
+          { label: 'AI Trust Score',      value: '—', icon: TrendingUp,  sub: 'No data yet'                },
+          { label: 'Trust Gaps Detected', value: '—', icon: AlertCircle, sub: 'Complete a check first'     },
+          { label: 'Quick Wins',          value: '—', icon: Zap,         sub: 'Actionable improvements'    },
         ].map(({ label, value, icon: Icon, sub }) => (
           <div key={label} className="rounded-xl border border-border bg-card p-5">
             <div className="flex items-center justify-between mb-3">
@@ -64,10 +64,10 @@ export default function DashboardPage() {
 
       {/* Two column lower */}
       <div className="grid md:grid-cols-2 gap-6">
-        {/* Recent scans */}
+        {/* Recent checks */}
         <div className="rounded-xl border border-border bg-card p-6">
           <div className="flex items-center justify-between mb-5">
-            <h3 className="font-heading font-semibold">Recent Scans</h3>
+            <h3 className="font-heading font-semibold">Recent Checks</h3>
             <Link href="/reports" className="text-xs text-primary hover:underline">
               View all
             </Link>
@@ -76,9 +76,9 @@ export default function DashboardPage() {
             <div className="w-12 h-12 rounded-xl bg-muted flex items-center justify-center mb-4">
               <FileText className="w-5 h-5 text-muted-foreground" />
             </div>
-            <p className="text-sm text-muted-foreground mb-4">No scans yet. Run your first scan to see results here.</p>
+            <p className="text-sm text-muted-foreground mb-4">No checks yet. Run your first AI Trust Check to see results here.</p>
             <Button variant="outline" size="sm" asChild>
-              <Link href="/scan">Run a scan</Link>
+              <Link href="/scan">Run a check</Link>
             </Button>
           </div>
         </div>
@@ -90,22 +90,22 @@ export default function DashboardPage() {
             {[
               {
                 icon: Search,
-                label: 'Run AI Visibility Scan',
-                description: 'Analyze your business across 5 AI platforms',
+                label: 'Run AI Trust Check',
+                description: 'Analyze your business trust signals across 5 AI platforms',
                 href: '/scan',
                 primary: true,
               },
               {
                 icon: FileText,
                 label: 'View Reports',
-                description: 'Access your saved scan history',
+                description: 'Access your saved check history',
                 href: '/reports',
               },
               {
                 icon: Sparkles,
                 label: 'Request Full Audit',
                 description: 'Expert review by OptiScale Advisors',
-                href: 'mailto:vinod@optiscale360.com?subject=Full AI Visibility Audit',
+                href: 'mailto:vinod@optiscale360.com?subject=Full AI Trust Audit Request',
               },
             ].map(({ icon: Icon, label, description, href, primary }) => (
               <Link

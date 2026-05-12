@@ -13,11 +13,11 @@ export default function Footer() {
                 <Zap className="w-4 h-4 text-primary-foreground" />
               </div>
               <span className="font-heading font-bold text-lg tracking-tight">
-                Visibly<span className="text-primary">AI</span>
+                Cite<span className="text-primary">Check</span>
               </span>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-[200px]">
-              See if AI recommends your business. Powered by OptiScale Advisors.
+              AI citation and trust visibility for local businesses. Powered by OptiScale Advisors.
             </p>
           </div>
 
@@ -26,7 +26,7 @@ export default function Footer() {
             <h4 className="text-sm font-semibold mb-4">Product</h4>
             <ul className="space-y-2.5">
               {[
-                { label: 'Run Free Scan', href: '/scan' },
+                { label: 'Run Free AI Check', href: '/scan' },
                 { label: 'Dashboard', href: '/dashboard' },
                 { label: 'My Reports', href: '/reports' },
                 { label: 'Pricing', href: '/#pricing' },
@@ -64,9 +64,9 @@ export default function Footer() {
             <h4 className="text-sm font-semibold mb-4">Resources</h4>
             <ul className="space-y-2.5">
               {[
-                { label: 'AI Visibility Guide', href: '/#' },
+                { label: 'AI Citation Guide', href: '/#' },
                 { label: 'FAQ', href: '/#faq' },
-                { label: 'AI Search Blog', href: '/#' },
+                { label: 'AI Trust & Visibility Blog', href: '/#' },
                 { label: 'Case Studies', href: '/#' },
               ].map(({ label, href }) => (
                 <li key={label}>
@@ -81,13 +81,13 @@ export default function Footer() {
 
         <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} VisiblyAI · Powered by{' '}
+            © {new Date().getFullYear()} CiteCheck · Powered by{' '}
             <Link href="https://optiscale360.com" className="hover:text-foreground transition-colors">
               OptiScale Advisors
             </Link>
           </p>
           <p className="text-xs text-muted-foreground">
-            AI visibility data is simulated for demonstration purposes.
+            AI trust scores are heuristic indicators and do not represent guaranteed AI recommendation rates.
           </p>
         </div>
       </div>

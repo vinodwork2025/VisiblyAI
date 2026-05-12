@@ -18,10 +18,10 @@ const platforms = [
 ]
 
 const stats = [
-  { value: '1,200+', label: 'Businesses scanned'   },
-  { value: '73%',    label: 'Found invisible to AI' },
-  { value: '5',      label: 'AI platforms analyzed' },
-  { value: '< 60s',  label: 'Scan time'             },
+  { value: '1,200+', label: 'Businesses checked'               },
+  { value: '73%',    label: 'Not trusted by AI platforms'      },
+  { value: '5',      label: 'AI platforms analyzed'            },
+  { value: '< 60s',  label: 'Check time'                       },
 ]
 
 const steps = [
@@ -34,65 +34,65 @@ const steps = [
   {
     number: '02',
     icon: Brain,
-    title: 'AI scans 5 platforms',
-    description: 'Our engine analyzes your visibility across ChatGPT, Gemini, Google AI, Perplexity, and local AI search.',
+    title: 'CiteCheck analyzes 5 platforms',
+    description: 'Our engine checks your AI trust signals, citation consistency, and recommendation visibility across ChatGPT, Gemini, Google AI, Perplexity, and local AI search.',
   },
   {
     number: '03',
     icon: BarChart2,
-    title: 'Get your visibility score',
-    description: 'Receive a detailed report with your AI Visibility Score, competitive analysis, and a prioritized action plan.',
+    title: 'Get your AI Trust Score',
+    description: 'Receive a detailed report with your CiteCheck AI Trust Score, competitive intelligence, and a prioritized action plan to improve your AI recommendation rate.',
   },
 ]
 
 const features = [
   {
     icon: Globe,
-    title: 'Multi-Platform Coverage',
-    description: 'Analyze your visibility across every major AI search engine simultaneously — not just Google.',
+    title: 'Multi-Platform AI Coverage',
+    description: 'Analyze your trust and citation signals across every major AI search engine simultaneously — not just Google.',
   },
   {
     icon: Users,
-    title: 'Competitor Comparison',
-    description: "See exactly how your AI visibility stacks up against your competitors. Know where you stand.",
+    title: 'Competitor Intelligence',
+    description: 'See exactly how your AI recommendation visibility compares to competitors. Understand where they outperform you and why.',
   },
   {
     icon: Zap,
-    title: 'Instant Visibility Score',
-    description: 'Get a 0–100 AI Visibility Score across 5 categories with one click. No waiting.',
+    title: 'Instant AI Trust Score',
+    description: 'Get your CiteCheck AI Trust Score across 5 trust categories with one click. See your overall recommendation readiness at a glance.',
   },
   {
     icon: Target,
-    title: 'Actionable Recommendations',
-    description: 'Prioritized, specific actions — not vague advice. Each recommendation is rated by impact and effort.',
+    title: 'Strategic Recommendations',
+    description: 'Prioritized, business-friendly actions — not vague advice. Each recommendation is rated by impact and effort required.',
   },
   {
     icon: Clock,
     title: 'Quick Wins Checklist',
-    description: 'Start improving today with our curated list of high-impact actions you can complete in under an hour.',
+    description: 'Improve your AI trust today with curated high-impact actions you can complete in under an hour.',
   },
   {
     icon: Award,
     title: 'Full Audit Ready',
-    description: 'Your scan results serve as the foundation for a full AI Visibility Audit by our expert team.',
+    description: 'Your check results serve as the foundation for a full AI Trust Audit by our expert team at OptiScale Advisors.',
   },
 ]
 
 const testimonials = [
   {
-    quote: "I had no idea my competitors were so much more visible in ChatGPT results. VisiblyAI showed me exactly what to fix — and we saw results within weeks.",
+    quote: "I had no idea my competitors were so much more trusted by ChatGPT. CiteCheck showed me exactly what to fix — and we saw real results within weeks.",
     name: 'Sarah M.',
     role: 'Owner, Precision Dental',
     initial: 'S',
   },
   {
-    quote: "The scan took 60 seconds and gave us more actionable insight than 3 months of guessing. The competitor comparison alone was worth it.",
+    quote: "The check took 60 seconds and gave us more actionable insight than 3 months of guessing. The competitor comparison alone was worth it.",
     name: 'James R.',
     role: 'Marketing Director, Apex Roofing',
     initial: 'J',
   },
   {
-    quote: "I never thought about AI search visibility before. Now it's one of our top priorities. VisiblyAI made the problem — and the solution — crystal clear.",
+    quote: "I never thought about AI citation visibility before. Now it's one of our top priorities. CiteCheck made the problem — and the solution — crystal clear.",
     name: 'Priya K.',
     role: 'CEO, Bloom Wellness Spa',
     initial: 'P',
@@ -101,28 +101,28 @@ const testimonials = [
 
 const faqs = [
   {
-    q: 'What is AI Visibility?',
-    a: "AI Visibility refers to how often and how prominently your business appears when AI systems like ChatGPT, Gemini, Google AI Overviews, and Perplexity generate responses to customer queries. As more people search via AI assistants, AI visibility is becoming as important as traditional SEO.",
+    q: 'What is AI citation visibility?',
+    a: "AI citation visibility refers to how often and how prominently your business is trusted and recommended when AI systems like ChatGPT, Gemini, Google AI Overviews, and Perplexity generate answers to customer queries. As more people use AI assistants to find local businesses, AI citation visibility is becoming as important as traditional SEO.",
   },
   {
-    q: 'How does the VisiblyAI scan work?',
-    a: "Our engine analyzes your website, content structure, technical signals, local authority markers, and trust indicators. We compare these signals against what AI systems require to recommend a business — then generate a score and action plan.",
+    q: 'How does CiteCheck work?',
+    a: "CiteCheck fetches live data from your website — including robots.txt, llms.txt, structured schema data, and content signals. We analyze whether AI crawlers can access your site, whether you have the trust signals AI platforms require, and how your authority compares to competitors. You get a real-data AI Trust Score and a clear action plan.",
   },
   {
-    q: 'Is the free scan accurate?',
-    a: "The free scan uses a sophisticated heuristic analysis to give you a directionally accurate AI Visibility Score. For a comprehensive, in-depth audit with real AI query testing, we offer a Full AI Visibility Audit service.",
+    q: 'How accurate is the AI Trust Score?',
+    a: "The score is based on real technical signals fetched from your live website: AI crawler access, llms.txt, schema markup, FAQ content, HTTPS, and sitemap presence. These are the foundational factors that determine whether AI platforms can discover and trust your business. For in-depth AI query testing and full citation benchmarking, we offer a Full AI Trust Audit.",
   },
   {
     q: 'Do I need technical knowledge?',
-    a: "Zero technical knowledge required. Your scan report is written in plain business language, and every recommendation includes a clear explanation of what to do and why it matters.",
+    a: "Zero technical knowledge required. Your report is written in plain business language, and every recommendation includes a clear explanation of what to do and why it matters for your AI recommendation rate.",
   },
   {
     q: 'How is this different from regular SEO?',
-    a: "Traditional SEO optimizes for search engine crawlers and ranking algorithms. AI Visibility optimization focuses on the signals AI language models use to select businesses for recommendations — content structure, authority signals, conversational relevance, and more.",
+    a: "Traditional SEO optimizes for search engine crawlers and ranking algorithms. AI trust optimization focuses on the signals AI language models use to select businesses for recommendations — citation consistency, authority signals, llms.txt presence, structured data, and conversational content relevance.",
   },
   {
-    q: 'What happens after the scan?',
-    a: "You receive a full AI Visibility Report with your score, competitor comparison, detected problems, and prioritized recommendations. You can implement quick wins yourself or engage our team for a Full AI Visibility Audit.",
+    q: 'What happens after the check?',
+    a: "You receive a full CiteCheck AI Trust Report with your score, competitor comparison, detected trust gaps, and prioritized recommendations. You can implement quick wins yourself or engage our team for a Full AI Trust Audit with real AI query testing and a 90-day action plan.",
   },
 ]
 
@@ -131,25 +131,25 @@ function DashboardPreview() {
     <div className="relative max-w-4xl mx-auto rounded-2xl overflow-hidden border border-border glass-card p-6 md:p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <div className="text-xs text-muted-foreground mb-1">AI Visibility Report</div>
+          <div className="text-xs text-muted-foreground mb-1">CiteCheck AI Trust Report</div>
           <div className="font-heading font-bold text-lg">Apex Roofing Co. · Dallas, TX</div>
         </div>
         <div className="text-right">
           <div className="text-3xl font-heading font-black gradient-text">54</div>
-          <div className="text-xs text-muted-foreground">Overall Score</div>
+          <div className="text-xs text-muted-foreground">AI Trust Score</div>
         </div>
       </div>
 
       <div className="space-y-3 mb-6">
         {[
-          { label: 'AI Visibility',       score: 42 },
-          { label: 'Local Authority',     score: 61 },
-          { label: 'Trust Signals',       score: 55 },
-          { label: 'Content Coverage',    score: 38 },
-          { label: 'Technical Readiness', score: 74 },
+          { label: 'AI Rec. Visibility',       score: 42 },
+          { label: 'Local Authority',           score: 61 },
+          { label: 'Citation Trust Signals',    score: 55 },
+          { label: 'Content Coverage',          score: 38 },
+          { label: 'Technical Trust Readiness', score: 74 },
         ].map(({ label, score }) => (
           <div key={label} className="flex items-center gap-3">
-            <div className="w-32 text-xs text-muted-foreground shrink-0">{label}</div>
+            <div className="w-40 text-xs text-muted-foreground shrink-0">{label}</div>
             <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
               <div className="h-full rounded-full bg-primary opacity-80" style={{ width: `${score}%` }} />
             </div>
@@ -159,7 +159,7 @@ function DashboardPreview() {
       </div>
 
       <div className="border-t border-border pt-5">
-        <div className="text-xs text-muted-foreground mb-3">Competitor Comparison</div>
+        <div className="text-xs text-muted-foreground mb-3">AI Recommendation Comparison</div>
         <div className="space-y-2">
           {[
             { name: 'Dallas Roofing Pros', score: 78, isTop: true },
@@ -220,20 +220,20 @@ export default function HomePage() {
         <div className="animate-fade-up">
           <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium badge-local mb-8">
             <Sparkles className="w-3 h-3" />
-            AI-Powered Visibility Analysis · Powered by OptiScale Advisors
+            AI Citation & Trust Intelligence · Powered by OptiScale Advisors
           </span>
         </div>
 
         <h1 className="font-heading font-black text-5xl md:text-7xl lg:text-8xl leading-[0.95] tracking-tight max-w-5xl animate-fade-up delay-100">
-          Check If{' '}
-          <span className="gradient-text">AI Recommends</span>
+          See if AI{' '}
+          <span className="gradient-text">trusts and recommends</span>
           <br />
-          Your Business
+          your business.
         </h1>
 
         <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed animate-fade-up delay-200">
-          Discover how visible your business is across ChatGPT, Google AI Overviews, Gemini,
-          and AI-powered search — before your competitors get there first.
+          Discover how visible and trustworthy your business appears across ChatGPT, Google AI Overviews, Gemini,
+          and AI-powered search systems — before your competitors get there first.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-4 mt-10 animate-fade-up delay-300">
@@ -243,12 +243,12 @@ export default function HomePage() {
             className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-8 text-base font-semibold teal-glow"
           >
             <Link href="/scan">
-              Run Free AI Visibility Scan
+              Run Free AI Visibility Check
               <ArrowRight className="ml-2 w-4 h-4" />
             </Link>
           </Button>
           <Button variant="outline" size="lg" asChild className="h-12 px-8 text-base">
-            <Link href="#preview">See Sample Report</Link>
+            <Link href="#preview">View Sample Report</Link>
           </Button>
         </div>
 
@@ -286,22 +286,22 @@ export default function HomePage() {
             <div>
               <Badge className="badge-local mb-6 font-medium border-0">The AI Search Shift</Badge>
               <h2 className="font-heading font-black text-4xl md:text-5xl leading-tight mb-6">
-                Your competitors are becoming more visible in AI search.{' '}
+                Your competitors are becoming more trusted by AI.{' '}
                 <span className="gradient-text">Are you?</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-6">
                 Millions of customers now use ChatGPT, Gemini, and Google AI Overviews to find local services.
-                These AI systems recommend businesses based on signals most business owners don&apos;t know exist.
+                These AI systems recommend businesses based on trust signals and citation authority most business owners don&apos;t know exist.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8">
-                If your business isn&apos;t optimized for AI recommendations, you&apos;re invisible to a growing
+                If your business lacks the right AI trust signals, you&apos;re invisible to a growing
                 segment of your market — even if your traditional SEO is perfect.
               </p>
               <ul className="space-y-3">
                 {[
-                  '73% of businesses are invisible to AI recommendations',
+                  '73% of businesses are not trusted enough to appear in AI recommendations',
                   'AI search usage growing 40% month-over-month',
-                  'Businesses in AI results see 2–3x more inquiries',
+                  'Businesses recommended by AI see 2–3x more inquiries',
                 ].map(item => (
                   <li key={item} className="flex items-start gap-3">
                     <AlertCircle className="w-4 h-4 text-primary mt-0.5 shrink-0" />
@@ -313,11 +313,11 @@ export default function HomePage() {
 
             <div className="relative">
               <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
-                <div className="text-sm font-medium text-muted-foreground mb-4">AI Recommendation Snapshot</div>
+                <div className="text-sm font-medium text-muted-foreground mb-4">AI Recommendation Trust Snapshot</div>
                 {[
-                  { name: 'Top Competitor',   score: 78, status: 'Recommended by ChatGPT',   good: true  },
-                  { name: 'Your Business',    score: 31, status: 'Not found in AI results',   good: false },
-                  { name: 'Other Competitor', score: 62, status: 'Appears in Gemini results', good: true  },
+                  { name: 'Top Competitor',   score: 78, status: 'Trusted & recommended by ChatGPT',   good: true  },
+                  { name: 'Your Business',    score: 31, status: 'Not trusted — missing from AI results', good: false },
+                  { name: 'Other Competitor', score: 62, status: 'Cited in Gemini results',               good: true  },
                 ].map(({ name, score, status, good }) => (
                   <div key={name} className={`rounded-xl p-4 border ${good ? 'border-border bg-secondary/30' : 'bg-severity-critical border-border'}`}>
                     <div className="flex items-center justify-between mb-2">
@@ -342,7 +342,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge className="badge-local mb-4 font-medium border-0">Simple Process</Badge>
-            <h2 className="font-heading font-black text-4xl md:text-5xl">How it works</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl">How CiteCheck works</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
             {steps.map(({ number, icon: Icon, title, description }) => (
@@ -366,9 +366,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge className="badge-local mb-4 font-medium border-0">Everything you need</Badge>
-            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">Your complete AI visibility picture</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">Your complete AI trust intelligence picture</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              One scan. Every AI platform. A clear path to becoming the business AI recommends.
+              One check. Every AI platform. A clear path to becoming the business AI trusts and recommends.
             </p>
           </div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -390,9 +390,9 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
             <Badge className="badge-local mb-4 font-medium border-0">Live Report Preview</Badge>
-            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">What your report looks like</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">What your AI Trust Report looks like</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">
-              A real-time snapshot of your AI visibility across 5 dimensions — with competitor benchmarking.
+              A real-data snapshot of your AI trust and citation authority across 5 dimensions — with competitor benchmarking.
             </p>
           </div>
           <DashboardPreview />
@@ -404,7 +404,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge className="badge-local mb-4 font-medium border-0">Results</Badge>
-            <h2 className="font-heading font-black text-4xl md:text-5xl">Businesses that got visible</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl">Businesses that got trusted by AI</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-6">
             {testimonials.map(({ quote, name, role, initial }) => (
@@ -457,12 +457,12 @@ export default function HomePage() {
             <Eye className="w-7 h-7 text-primary" />
           </div>
           <h2 className="font-heading font-black text-5xl md:text-6xl leading-tight mb-6">
-            Start getting visible<br />
-            <span className="gradient-text">in AI search today.</span>
+            Start getting trusted<br />
+            <span className="gradient-text">by AI search today.</span>
           </h2>
           <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto">
-            Your free AI Visibility Scan takes under 60 seconds. No credit card. No commitment.
-            Just clarity on where you stand.
+            Your free AI Trust Check takes under 60 seconds. No credit card. No commitment.
+            Just clarity on where you stand — and what to fix.
           </p>
           <Button
             size="lg"
@@ -470,12 +470,12 @@ export default function HomePage() {
             className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-10 text-lg font-semibold teal-glow"
           >
             <Link href="/scan">
-              Run My Free AI Scan
+              Run My Free AI Check
               <ArrowRight className="ml-2 w-5 h-5" />
             </Link>
           </Button>
           <div className="flex items-center justify-center gap-6 mt-6">
-            {['Free scan', 'No credit card', 'Instant results'].map(item => (
+            {['Free check', 'No credit card', 'Instant results'].map(item => (
               <div key={item} className="flex items-center gap-1.5 text-sm text-muted-foreground">
                 <CheckCircle className="w-3.5 h-3.5 text-primary" />
                 {item}

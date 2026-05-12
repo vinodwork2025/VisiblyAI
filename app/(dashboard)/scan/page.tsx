@@ -77,10 +77,10 @@ export default function ScanPage() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-local text-xs font-medium mb-4">
             <Search className="w-3 h-3" />
-            Free AI Visibility Scan
+            Free AI Trust Check
           </div>
           <h1 className="font-heading font-black text-3xl md:text-4xl mb-2">
-            Scan your business
+            Check your AI trust signals
           </h1>
           <p className="text-muted-foreground text-sm">
             Step {step} of {STEPS.length} · {STEPS[step - 1].description}

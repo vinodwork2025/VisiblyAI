@@ -54,7 +54,7 @@ export default function ReportsPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="font-heading font-black text-3xl mb-1">My Reports</h1>
-          <p className="text-muted-foreground text-sm">Your saved AI Visibility scan history.</p>
+          <p className="text-muted-foreground text-sm">Your saved AI Trust Check history.</p>
         </div>
         <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
           <Link href="/scan">
@@ -72,7 +72,7 @@ export default function ReportsPage() {
           </div>
           <h2 className="font-heading font-bold text-xl mb-2">No reports yet</h2>
           <p className="text-muted-foreground text-sm max-w-sm mb-6">
-            Run your first AI Visibility Scan to see how your business appears across ChatGPT, Gemini, and more.
+            Run your first AI Trust Check to see how trusted and visible your business is across ChatGPT, Gemini, and more.
           </p>
           <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
             <Link href="/scan">Run Free Scan</Link>
@@ -115,8 +115,8 @@ export default function ReportsPage() {
                     <div className="hidden md:grid grid-cols-5 gap-2 mb-4">
                       {(Object.entries(report.categories) as [string, number][]).map(([key, score]) => {
                         const labels: Record<string, string> = {
-                          aiVisibility: 'AI', localAuthority: 'Local',
-                          trustSignals: 'Trust', contentCoverage: 'Content', technicalReadiness: 'Tech',
+                          aiRecommendationVisibility: 'AI Rec.', localAuthority: 'Local',
+                          citationTrustSignals: 'Citations', contentCoverage: 'Content', technicalTrustReadiness: 'Tech',
                         }
                         return (
                           <div key={key} className="text-center">
@@ -144,7 +144,7 @@ export default function ReportsPage() {
                   <div className="flex flex-col items-end gap-4 shrink-0">
                     <div className="text-center">
                       <ScorePill score={report.overallScore} />
-                      <div className="text-xs text-muted-foreground">AI Score</div>
+                      <div className="text-xs text-muted-foreground">Trust Score</div>
                     </div>
                     <div className="flex items-center gap-2">
                       <button

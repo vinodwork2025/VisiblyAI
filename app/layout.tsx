@@ -18,23 +18,25 @@ const dmSans = DM_Sans({
 })
 
 export const metadata: Metadata = {
-  title: 'VisiblyAI — See If AI Recommends Your Business',
+  title: 'CiteCheck — See If AI Trusts and Recommends Your Business',
   description:
-    'Discover how visible your business is across ChatGPT, Google AI Overviews, Gemini, and AI-powered search. Get your free AI Visibility Score in minutes.',
+    'Discover how trusted and visible your business is across ChatGPT, Google AI Overviews, Gemini, and AI-powered search. Get your free AI Trust Score in minutes.',
   keywords: [
-    'AI visibility',
-    'AI search optimization',
-    'ChatGPT business visibility',
+    'AI citation visibility',
+    'AI trust signals',
+    'ChatGPT business recommendations',
     'Google AI Overviews',
-    'Gemini business recommendation',
-    'Perplexity AI',
-    'local AI search',
+    'Gemini business visibility',
+    'Perplexity AI citations',
+    'AI recommendation analysis',
+    'local AI search optimization',
     'GEO optimization',
+    'AI discoverability',
   ],
   openGraph: {
-    title: 'VisiblyAI — See If AI Recommends Your Business',
+    title: 'CiteCheck — See If AI Trusts and Recommends Your Business',
     description:
-      'Run a free AI Visibility Scan. See how ChatGPT, Gemini, and Google AI rank your business.',
+      'Run a free AI Trust Check. See how ChatGPT, Gemini, and Google AI rate your business trust and citation authority.',
     type: 'website',
   },
 }

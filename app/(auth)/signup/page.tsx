@@ -89,7 +89,7 @@ export default function SignupPage() {
           <Zap className="w-4 h-4 text-primary-foreground" />
         </div>
         <span className="font-heading font-bold text-xl">
-          Visibly<span className="text-primary">AI</span>
+          Cite<span className="text-primary">Check</span>
         </span>
       </Link>
 
@@ -98,14 +98,14 @@ export default function SignupPage() {
           <div className="mb-6">
             <h1 className="font-heading font-black text-2xl mb-2">Create your account</h1>
             <p className="text-sm text-muted-foreground">
-              Start with a free AI Visibility Scan. No credit card required.
+              Start with a free AI Trust Check. No credit card required.
             </p>
           </div>
 
           {/* Benefits */}
           <div className="rounded-xl bg-primary/5 border border-primary/15 p-4 mb-6">
             <div className="space-y-2">
-              {['Free AI Visibility Scan', 'Save & revisit reports', 'Competitor tracking'].map(b => (
+              {['Free AI Trust Check', 'Save & revisit reports', 'Competitor intelligence'].map(b => (
                 <div key={b} className="flex items-center gap-2">
                   <CheckCircle className="w-3.5 h-3.5 text-primary shrink-0" />
                   <span className="text-xs text-muted-foreground">{b}</span>

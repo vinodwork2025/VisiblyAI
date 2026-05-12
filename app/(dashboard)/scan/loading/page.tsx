@@ -5,11 +5,11 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircle, Zap } from 'lucide-react'
 
 const SCAN_STEPS = [
-  { id: 1, label: 'Fetching your website data…',          detail: 'Reading robots.txt, llms.txt, and page structure'            },
-  { id: 2, label: 'Analyzing AI visibility signals…',     detail: 'Checking GPTBot, ClaudeBot, and PerplexityBot access'        },
-  { id: 3, label: 'Scanning trust & schema indicators…',  detail: 'Reviewing structured data, reviews, and E-E-A-T signals'     },
-  { id: 4, label: 'Comparing competitors…',               detail: 'Benchmarking your visibility against market competitors'      },
-  { id: 5, label: 'Generating AI recommendations…',       detail: 'Building your personalized AI visibility action plan'        },
+  { id: 1, label: 'Analyzing AI trust signals…',              detail: 'Checking your website\'s AI accessibility and trust indicators' },
+  { id: 2, label: 'Checking authority indicators…',           detail: 'Evaluating llms.txt, schema markup, and AI crawler access'      },
+  { id: 3, label: 'Scanning citation consistency…',           detail: 'Reviewing structured data, reviews, and E-E-A-T signals'        },
+  { id: 4, label: 'Comparing AI recommendation patterns…',    detail: 'Benchmarking your trust signals against competitors'            },
+  { id: 5, label: 'Evaluating discoverability signals…',      detail: 'Building your personalized AI trust action plan'               },
 ]
 
 const STEP_DELAY = 1800
@@ -139,8 +139,8 @@ function LoadingContent() {
         </h1>
         <p className="text-sm text-muted-foreground">
           {done
-            ? 'Redirecting you to your AI Visibility Report…'
-            : 'Fetching live data from your website and competitor sites'
+            ? 'Redirecting you to your CiteCheck AI Trust Report…'
+            : 'Fetching live trust and citation data from your website'
           }
         </p>
       </div>
@@ -212,7 +212,7 @@ function LoadingContent() {
       </div>
 
       <p className="text-xs text-muted-foreground mt-8 text-center max-w-xs">
-        Scanning live data from your website across ChatGPT, Google AI, Gemini, Perplexity, and local AI search
+        Checking AI trust, citations, and authority signals across ChatGPT, Google AI, Gemini, and Perplexity
       </p>
     </div>
   )

@@ -3,7 +3,7 @@ import { Zap, LayoutDashboard, Search, FileText, Settings, Sparkles } from 'luci
 
 const nav = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard'  },
-  { href: '/scan',      icon: Search,          label: 'New Scan'   },
+  { href: '/scan',      icon: Search,          label: 'New Check'  },
   { href: '/reports',   icon: FileText,         label: 'My Reports' },
   { href: '/settings',  icon: Settings,         label: 'Settings'   },
 ]
@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Zap className="w-4 h-4 text-primary-foreground" />
             </div>
             <span className="font-heading font-bold text-base">
-              Visibly<span className="text-primary">AI</span>
+              Cite<span className="text-primary">Check</span>
             </span>
           </Link>
         </div>
@@ -49,10 +49,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <span className="text-xs font-semibold text-primary">Full Audit</span>
             </div>
             <p className="text-xs text-muted-foreground mb-3 leading-relaxed">
-              Get a complete AI visibility audit by our expert team.
+              Get a complete AI trust and citation audit by our expert team.
             </p>
             <a
-              href="mailto:vinod@optiscale360.com?subject=Full AI Visibility Audit Request"
+              href="mailto:vinod@optiscale360.com?subject=Full AI Trust Audit Request"
               className="block text-center text-xs font-semibold bg-primary text-primary-foreground rounded-lg py-2 hover:bg-primary/90 transition-colors"
             >
               Request Audit →
@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
             <Zap className="w-3.5 h-3.5 text-primary-foreground" />
           </div>
-          <span className="font-heading font-bold text-sm">Visibly<span className="text-primary">AI</span></span>
+          <span className="font-heading font-bold text-sm">Cite<span className="text-primary">Check</span></span>
         </Link>
         <nav className="flex items-center gap-1">
           {nav.slice(0, 3).map(({ href, icon: Icon, label }) => (

@@ -61,11 +61,11 @@ export function runMockScan(form: ScanFormData): ScanResult {
   const urlBase = scoreFromUrl(websiteUrl)
 
   const categories: CategoryScores = {
-    aiVisibility:        detScore(seed + 'aiv', Math.max(15, urlBase - 25), Math.min(urlBase + 15, 72)),
-    localAuthority:      detScore(seed + 'loc', Math.max(20, urlBase - 18), Math.min(urlBase + 22, 80)),
-    trustSignals:        detScore(seed + 'tru', Math.max(18, urlBase - 22), Math.min(urlBase + 18, 76)),
-    contentCoverage:     detScore(seed + 'con', Math.max(15, urlBase - 28), Math.min(urlBase + 12, 70)),
-    technicalReadiness:  detScore(seed + 'tec', Math.max(22, urlBase - 15), Math.min(urlBase + 25, 82)),
+    aiRecommendationVisibility: detScore(seed + 'aiv', Math.max(15, urlBase - 25), Math.min(urlBase + 15, 72)),
+    localAuthority:             detScore(seed + 'loc', Math.max(20, urlBase - 18), Math.min(urlBase + 22, 80)),
+    citationTrustSignals:       detScore(seed + 'tru', Math.max(18, urlBase - 22), Math.min(urlBase + 18, 76)),
+    contentCoverage:            detScore(seed + 'con', Math.max(15, urlBase - 28), Math.min(urlBase + 12, 70)),
+    technicalTrustReadiness:    detScore(seed + 'tec', Math.max(22, urlBase - 15), Math.min(urlBase + 25, 82)),
   }
 
   const overallScore = Math.round(
@@ -237,7 +237,7 @@ async function safeGet(url: string, timeoutMs = 6000): Promise<string | null> {
     try {
       const res = await fetch(url, {
         signal: controller.signal,
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; VisiblyAI/1.0; +https://visiblyai.com)' },
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; CiteCheck/1.0; +https://citecheck.ai)' },
       })
       if (!res.ok) return null
       return await res.text()
@@ -386,7 +386,7 @@ function scoreFromData(data: SiteData): CategoryScores {
   if (data.schemaTypes.includes('PostalAddress') || data.schemaTypes.includes('GeoCoordinates')) local += 15
   local = Math.min(local, 82)
 
-  return { aiVisibility, localAuthority: local, trustSignals: trust, contentCoverage: content, technicalReadiness: technical }
+  return { aiRecommendationVisibility: aiVisibility, localAuthority: local, citationTrustSignals: trust, contentCoverage: content, technicalTrustReadiness: technical }
 }
 
 function isLikelyUrl(s: string): boolean {

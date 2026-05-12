@@ -153,11 +153,11 @@ function ResultsContent() {
   }
 
   const catLabels: Record<keyof typeof categories, string> = {
-    aiVisibility:       'AI Visibility',
-    localAuthority:     'Local Authority',
-    trustSignals:       'Trust Signals',
-    contentCoverage:    'Content Coverage',
-    technicalReadiness: 'Technical Readiness',
+    aiRecommendationVisibility: 'AI Recommendation Visibility',
+    localAuthority:             'Local Authority',
+    citationTrustSignals:       'Citation Trust Signals',
+    contentCoverage:            'Content Coverage',
+    technicalTrustReadiness:    'Technical Trust Readiness',
   }
 
   const createdDate = new Date(result.createdAt).toLocaleDateString('en-US', {
@@ -171,7 +171,7 @@ function ResultsContent() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="badge-local text-xs px-2.5 py-1 rounded-full font-medium">AI Visibility Report</span>
+            <span className="badge-local text-xs px-2.5 py-1 rounded-full font-medium">CiteCheck AI Trust Report</span>
             <span className="text-xs text-muted-foreground">{createdDate}</span>
           </div>
           <h1 className="font-heading font-black text-2xl md:text-3xl">{businessName}</h1>
@@ -204,18 +204,18 @@ function ResultsContent() {
             <ScoreRing score={overallScore} />
           </div>
           <div>
-            <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">Overall AI Visibility Score</div>
+            <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-2">CiteCheck AI Trust Score</div>
             <h2 className="font-heading font-black text-xl mb-2">
-              {overallScore < 35 ? 'Critical: Nearly invisible to AI'  :
-               overallScore < 50 ? 'Poor: Low AI visibility'           :
-               overallScore < 65 ? 'Fair: Moderate AI visibility'      :
-               overallScore < 80 ? 'Good: Solid AI visibility'         :
-               'Excellent: Strong AI visibility'}
+              {overallScore < 35 ? 'Critical: AI platforms do not trust your business'  :
+               overallScore < 50 ? 'Poor: Low AI trust and recommendation readiness'    :
+               overallScore < 65 ? 'Fair: Moderate AI trust — gaps remain'             :
+               overallScore < 80 ? 'Good: Solid AI trust signals'                      :
+               'Excellent: Strong AI trust and recommendation authority'}
             </h2>
             <p className="text-sm text-muted-foreground leading-relaxed">
               {overallScore < 50
-                ? `Your business is significantly underperforming in AI search. Competitors are capturing the customers who use ChatGPT and Gemini to find ${primaryService} services in ${city}.`
-                : `Your business has a solid foundation but specific gaps are limiting your AI visibility. Targeted improvements could significantly increase your AI recommendation rate.`
+                ? `Your business lacks the trust signals AI platforms require to recommend you. Competitors are capturing the customers who use ChatGPT and Gemini to find ${primaryService} services in ${city}.`
+                : `Your business has a solid foundation but specific trust gaps are limiting your AI recommendation rate. Targeted improvements could significantly increase your citation authority.`
               }
             </p>
           </div>
@@ -271,8 +271,8 @@ function ResultsContent() {
           <div className="mt-4 rounded-xl border border-amber-accent/20 bg-severity-warning p-3 flex items-start gap-2">
             <AlertTriangle className="w-4 h-4 severity-warning mt-0.5 shrink-0" />
             <p className="text-xs text-muted-foreground">
-              <span className="severity-warning font-medium">You&apos;re behind in AI visibility. </span>
-              Competitors outranking you in AI results are capturing customers who use AI assistants to find {primaryService} in {city}.
+              <span className="severity-warning font-medium">Your competitors have stronger AI trust signals. </span>
+              Businesses outranking you in AI recommendation trust are capturing customers who use ChatGPT and Gemini to find {primaryService} in {city}.
             </p>
           </div>
         )}
@@ -282,7 +282,7 @@ function ResultsContent() {
       <div>
         <div className="mb-4">
           <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">Platform Analysis</div>
-          <h3 className="font-heading font-semibold text-lg">AI Visibility by Platform</h3>
+          <h3 className="font-heading font-semibold text-lg">AI Recommendation Insights</h3>
         </div>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {insights.map(insight => (
@@ -302,7 +302,7 @@ function ResultsContent() {
       <div>
         <div className="mb-4">
           <div className="text-xs text-muted-foreground font-medium uppercase tracking-wider mb-1">Issues Detected</div>
-          <h3 className="font-heading font-semibold text-lg">Problems Holding You Back</h3>
+          <h3 className="font-heading font-semibold text-lg">Trust Gaps Holding You Back</h3>
         </div>
         <div className="space-y-3">
           {problems.map(problem => (
@@ -402,8 +402,8 @@ function ResultsContent() {
             Ready to dominate AI search?
           </h3>
           <p className="text-sm text-muted-foreground max-w-lg mx-auto mb-6 leading-relaxed">
-            Get a full AI Visibility Audit by the OptiScale Advisors team. We&apos;ll run real
-            AI queries, benchmark your competitors, and deliver a complete 90-day action plan
+            Get a full AI Trust Audit by the OptiScale Advisors team. We&apos;ll run real
+            AI queries, benchmark your competitors&apos; citation authority, and deliver a complete 90-day action plan
             to maximize your AI recommendation rate.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -411,7 +411,7 @@ function ResultsContent() {
               asChild
               className="bg-primary text-primary-foreground hover:bg-primary/90 h-12 px-8 font-semibold teal-glow"
             >
-              <a href="mailto:vinod@optiscale360.com?subject=Full AI Visibility Audit Request">
+              <a href="mailto:vinod@optiscale360.com?subject=Full AI Trust Audit Request">
                 Request Full Audit
                 <ArrowRight className="ml-2 w-4 h-4" />
               </a>

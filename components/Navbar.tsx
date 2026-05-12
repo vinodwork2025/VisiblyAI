@@ -30,7 +30,7 @@ export default function Navbar() {
             <Zap className="w-4 h-4 text-primary-foreground" />
           </div>
           <span className="font-heading font-bold text-lg tracking-tight">
-            Visibly<span className="text-primary">AI</span>
+            Cite<span className="text-primary">Check</span>
           </span>
         </Link>
 
@@ -54,7 +54,7 @@ export default function Navbar() {
           </Button>
           <Button size="sm" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
             <Link href="/scan">
-              Run Free Scan
+              Run Free Check
             </Link>
           </Button>
         </div>
@@ -86,7 +86,7 @@ export default function Navbar() {
               <Link href="/login" onClick={() => setMenuOpen(false)}>Sign in</Link>
             </Button>
             <Button size="sm" asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="/scan" onClick={() => setMenuOpen(false)}>Run Free Scan</Link>
+              <Link href="/scan" onClick={() => setMenuOpen(false)}>Run Free Check</Link>
             </Button>
           </div>
         </div>
