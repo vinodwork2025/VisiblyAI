@@ -16,7 +16,7 @@ import Footer from '@/components/Footer'
 /* ── Animation variants ── */
 const fadeUp: Variants = {
   hidden:  { opacity: 0, y: 32 },
-  visible: { opacity: 1, y: 0,  transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
 }
 const fadeIn: Variants = {
   hidden:  { opacity: 0 },
@@ -25,11 +25,8 @@ const fadeIn: Variants = {
 const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.08 } },
 }
-const staggerSlow: Variants = {
-  visible: { transition: { staggerChildren: 0.12 } },
-}
 
-/* ── Section wrapper with scroll trigger ── */
+/* ── Scroll-triggered section wrapper ── */
 function Section({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-80px 0px' })
@@ -57,7 +54,7 @@ function StaggerGrid({ children, className = '' }: { children: React.ReactNode; 
   )
 }
 
-/* ── Animated counter ── */
+/* ── Animated stat ── */
 function AnimatedStat({ value, label }: { value: string; label: string }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true })
@@ -82,7 +79,7 @@ function AnimatedStat({ value, label }: { value: string; label: string }) {
   )
 }
 
-/* ── Platform badge ── */
+/* ── Platform chip ── */
 function PlatformChip({ name, color }: { name: string; color: string }) {
   return (
     <motion.span
@@ -95,13 +92,13 @@ function PlatformChip({ name, color }: { name: string; color: string }) {
 }
 
 /* ── Feature card ── */
-function FeatureCard({ icon: Icon, title, description, index }: { icon: React.ElementType; title: string; description: string; index: number }) {
+function FeatureCard({ icon: Icon, title, description }: { icon: React.ElementType; title: string; description: string }) {
   return (
     <motion.div
       variants={fadeUp}
       className="group relative rounded-2xl border border-border bg-card p-7 hover-lift shadow-card"
     >
-      <div className="w-11 h-11 rounded-xl bg-primary/8 border border-primary/15 flex items-center justify-center mb-5 group-hover:bg-primary/12 transition-colors">
+      <div className="w-11 h-11 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-5 group-hover:bg-primary/15 transition-colors">
         <Icon className="w-5 h-5 text-primary" />
       </div>
       <h3 className="font-heading font-bold text-base mb-2.5 text-foreground">{title}</h3>
@@ -119,7 +116,7 @@ function StepCard({ number, icon: Icon, title, description }: { number: string; 
       className="relative rounded-2xl border border-border bg-card p-8 shadow-card hover-lift"
     >
       <div className="flex items-start gap-5 mb-5">
-        <div className="w-12 h-12 rounded-xl bg-primary/8 border border-primary/15 flex items-center justify-center shrink-0">
+        <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0">
           <Icon className="w-5 h-5 text-primary" />
         </div>
         <span className="font-heading font-black text-5xl text-primary/10 leading-none mt-1">{number}</span>
@@ -172,33 +169,32 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   )
 }
 
-/* ── Dashboard preview ── */
+/* ── Report preview ── */
 function ReportPreview() {
   const categories = [
-    { label: 'AI Rec. Visibility',       score: 42, color: 'bg-rose-400'   },
-    { label: 'Local Authority',           score: 61, color: 'bg-primary'    },
-    { label: 'Citation Trust Signals',    score: 55, color: 'bg-primary'    },
-    { label: 'Content Coverage',          score: 38, color: 'bg-amber-400'  },
-    { label: 'Technical Trust Readiness', score: 74, color: 'bg-primary'    },
+    { label: 'AI Rec. Visibility',       score: 42, color: 'bg-rose-400'  },
+    { label: 'Brand Authority',           score: 61, color: 'bg-primary'   },
+    { label: 'Citation Trust Signals',    score: 55, color: 'bg-primary'   },
+    { label: 'Content Coverage',          score: 38, color: 'bg-amber-400' },
+    { label: 'Technical Trust Readiness', score: 74, color: 'bg-primary'   },
   ]
   const competitors = [
-    { name: 'Dallas Roofing Pros', score: 78, isTop: true  },
-    { name: 'Apex Roofing Co.',    score: 54, isUser: true  },
-    { name: 'Texas Roof Masters',  score: 46               },
+    { name: 'Meridian Legal Group', score: 78, isTop: true  },
+    { name: 'Vertex & Associates',  score: 54, isUser: true },
+    { name: 'Apex Advisory Co.',    score: 46               },
   ]
   return (
     <motion.div
       variants={fadeUp}
       className="relative max-w-3xl mx-auto rounded-2xl overflow-hidden border border-border bg-card shadow-card-lg p-7 md:p-9"
     >
-      {/* Report header */}
       <div className="flex items-start justify-between mb-7">
         <div>
-          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/8 border border-primary/15 px-3 py-1 rounded-full mb-3">
+          <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full mb-3">
             <Sparkles className="w-3 h-3" /> CiteCheck AI Trust Report
           </div>
-          <div className="font-heading font-bold text-xl text-foreground">Apex Roofing Co.</div>
-          <div className="text-sm text-muted-foreground">Dallas, TX · Roofing</div>
+          <div className="font-heading font-bold text-xl text-foreground">Vertex & Associates</div>
+          <div className="text-sm text-muted-foreground">London, UK · Professional Services</div>
         </div>
         <div className="text-right">
           <div className="text-4xl font-heading font-black gradient-text leading-none">54</div>
@@ -206,7 +202,6 @@ function ReportPreview() {
         </div>
       </div>
 
-      {/* Category bars */}
       <div className="space-y-3.5 mb-7">
         {categories.map(({ label, score, color }, i) => (
           <div key={label} className="flex items-center gap-3">
@@ -225,7 +220,6 @@ function ReportPreview() {
         ))}
       </div>
 
-      {/* Competitor comparison */}
       <div className="border-t border-border pt-6">
         <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">AI Recommendation Comparison</div>
         <div className="space-y-2.5">
@@ -247,7 +241,6 @@ function ReportPreview() {
         </div>
       </div>
 
-      {/* Fade-out CTA */}
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-card via-card/90 to-transparent flex items-end justify-center pb-5">
         <Link href="/scan">
           <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary gap-2 font-semibold">
@@ -259,141 +252,130 @@ function ReportPreview() {
   )
 }
 
-/* ─────────────────────────────────────────────
-   DATA
-───────────────────────────────────────────── */
+/* ── Data ── */
 
 const platforms = [
-  { name: 'ChatGPT',          color: 'badge-chatgpt'    },
-  { name: 'Google AI',        color: 'badge-google'     },
-  { name: 'Gemini',           color: 'badge-gemini'     },
-  { name: 'Perplexity',       color: 'badge-perplexity' },
-  { name: 'Local AI Search',  color: 'badge-local'      },
+  { name: 'ChatGPT',         color: 'badge-chatgpt'    },
+  { name: 'Google AI',       color: 'badge-google'     },
+  { name: 'Gemini',          color: 'badge-gemini'     },
+  { name: 'Perplexity',      color: 'badge-perplexity' },
+  { name: 'AI-Powered Search', color: 'badge-local'    },
 ]
 
 const stats = [
-  { value: '1,200+', label: 'Businesses analyzed'            },
-  { value: '73%',    label: 'Missing from AI recommendations' },
-  { value: '5',      label: 'AI platforms covered'           },
-  { value: '< 60s',  label: 'Time to your Trust Score'       },
+  { value: '14,000+', label: 'Businesses analyzed'               },
+  { value: '73%',     label: 'Missing from AI recommendations'   },
+  { value: '5',       label: 'AI platforms monitored'            },
+  { value: '< 60s',   label: 'Time to your AI Trust Score'       },
 ]
 
 const steps = [
   {
     number: '01', icon: Search,
     title: 'Enter your business details',
-    description: 'Provide your business name, website, city, and primary service. Takes under 60 seconds — no credit card needed.',
+    description: 'Provide your business name, website, and primary service. Takes under 60 seconds — no credit card, no commitment.',
   },
   {
     number: '02', icon: Brain,
-    title: 'CiteCheck fetches live data',
-    description: 'Our engine reads your website in real time — robots.txt, llms.txt, schema markup, and content signals — to analyze your actual AI trust posture.',
+    title: 'CiteCheck scans live data',
+    description: 'Our engine reads your site in real time — AI crawler access, llms.txt, schema markup, and content signals — to build your actual AI trust profile.',
   },
   {
     number: '03', icon: BarChart2,
-    title: 'Get your CiteCheck AI Trust Score',
-    description: 'Receive a full report with your AI Trust Score, competitor benchmarking, detected trust gaps, and a prioritized action plan.',
+    title: 'Get your AI Trust Intelligence report',
+    description: 'A full report: your AI Trust Score, competitor benchmarking, detected trust gaps, and a prioritized action plan to improve your AI recommendation visibility.',
   },
 ]
 
 const features = [
-  { icon: Globe,      title: 'Multi-Platform AI Coverage',    description: 'Check AI trust signals across ChatGPT, Google AI Overviews, Gemini, Perplexity, and local AI search — simultaneously.' },
-  { icon: Users,      title: 'Live Competitor Intelligence',  description: 'We fetch and score your competitors\' sites in real time. See their actual trust signals vs. yours — no guessing.' },
-  { icon: Zap,        title: 'Instant AI Trust Score',        description: 'Your CiteCheck AI Trust Score across 5 categories — AI Recommendation Visibility, Citation Trust Signals, Local Authority, Content Coverage, and Technical Trust Readiness.' },
-  { icon: Target,     title: 'Strategic Recommendations',     description: 'Specific, business-friendly actions ranked by impact and effort. Built from your actual site data, not templates.' },
-  { icon: Clock,      title: 'Quick Wins Checklist',          description: 'Improve AI trust today with high-impact actions — some completable in under 15 minutes — surfaced from your live scan.' },
-  { icon: Award,      title: 'Full Audit Ready',              description: 'Your CiteCheck report becomes the foundation for a full AI Trust Audit by our OptiScale Advisors expert team.' },
+  { icon: Globe,      title: 'Multi-Platform AI Coverage',      description: 'Analyze trust signals across ChatGPT, Google AI Overviews, Gemini, Perplexity, and emerging AI-powered search — in a single check.' },
+  { icon: Users,      title: 'Live Competitor Intelligence',    description: 'We scan your competitors\' sites in real time. See their actual AI trust signals vs. yours — no estimates, no guessing.' },
+  { icon: Zap,        title: 'AI Trust Score',                  description: 'Scored across 5 dimensions: AI Recommendation Visibility, Citation Trust Signals, Brand Authority, Content Coverage, and Technical Trust Readiness.' },
+  { icon: Target,     title: 'Strategic Action Plan',           description: 'Specific recommendations ranked by impact and effort — built from your real site data, not generic templates.' },
+  { icon: Clock,      title: 'Quick Wins Surfaced',             description: 'High-impact actions — some completable in under 15 minutes — identified directly from your live scan results.' },
+  { icon: Award,      title: 'Full Audit Ready',                description: 'Your CiteCheck report becomes the foundation for a full AI Trust Audit with a 90-day roadmap from our expert team.' },
 ]
 
 const testimonials = [
   {
-    quote: "I had no idea my competitors had stronger AI trust signals. CiteCheck showed me exactly what was blocking me — and we saw real results within weeks.",
-    name: 'Sarah M.', role: 'Owner, Precision Dental', initial: 'S',
+    quote: "We had strong traditional SEO but were invisible to AI search. CiteCheck showed us exactly what was missing — and results followed within weeks of fixing it.",
+    name: 'James O.', role: 'CEO, Meridian Legal Group', initial: 'J',
   },
   {
-    quote: "The check took 60 seconds and gave us more actionable insight than 3 months of guessing. The competitor comparison alone changed how we think about digital.",
-    name: 'James R.', role: 'Marketing Director, Apex Roofing', initial: 'J',
+    quote: "The competitor comparison was eye-opening. Our top rival had signals we'd never considered. CiteCheck made the problem — and the solution — immediately clear.",
+    name: 'Sarah K.', role: 'Head of Growth, Luminary Agency', initial: 'S',
   },
   {
-    quote: "I never thought about AI citation visibility before. Now it's one of our top priorities. CiteCheck made the problem — and the solution — immediately clear.",
-    name: 'Priya K.', role: 'CEO, Bloom Wellness Spa', initial: 'P',
+    quote: "We run a SaaS platform and AI discoverability is becoming critical. CiteCheck gave us a clear picture of where we stood and what to prioritize. Worth every minute.",
+    name: 'Michael T.', role: 'Co-founder, Stackwell', initial: 'M',
   },
 ]
 
 const faqs = [
   {
-    q: 'What is AI citation visibility?',
-    a: "AI citation visibility is how often and how prominently your business is trusted and recommended when AI systems like ChatGPT, Gemini, Google AI Overviews, and Perplexity generate answers to customer queries. As more people use AI assistants to find local services, AI citation authority is becoming as important as traditional SEO.",
+    q: 'What is AI recommendation visibility?',
+    a: "AI recommendation visibility is how often and how prominently your brand appears when AI systems like ChatGPT, Gemini, Google AI Overviews, and Perplexity generate responses to user queries. As AI-powered search becomes the primary discovery channel, visibility in these systems is becoming as important as traditional search ranking.",
   },
   {
     q: 'How does CiteCheck work?',
-    a: "CiteCheck fetches live data directly from your website — including robots.txt, llms.txt, JSON-LD schema, FAQ content, and technical signals. We analyze whether AI crawlers can access your site, whether you have the trust and authority signals AI platforms require, and how your posture compares to competitors. You get a real-data AI Trust Score and clear action plan.",
+    a: "CiteCheck fetches live data directly from your website — robots.txt, llms.txt, JSON-LD schema, FAQ content, HTTPS status, and sitemap. We analyze whether AI crawlers can access your site, whether you have the trust and authority signals AI platforms require, and how your posture compares to competitors in real time.",
   },
   {
     q: 'How accurate is the AI Trust Score?',
-    a: "The score is based on real technical signals from your live website: AI crawler access (GPTBot, ClaudeBot, PerplexityBot), llms.txt presence, schema markup, FAQ content, HTTPS, and sitemap. These are the foundational factors that determine whether AI platforms can discover and trust your business. For deep AI query testing, we offer a Full AI Trust Audit.",
+    a: "The score reflects real technical signals from your live website: AI crawler access (GPTBot, ClaudeBot, PerplexityBot), llms.txt presence, schema markup quality, FAQ content signals, HTTPS, and sitemap accessibility. These are the foundational factors that determine whether AI platforms can discover and trust your business. For deep AI query testing across specific use cases, we offer a Full AI Trust Audit.",
   },
   {
     q: 'Do I need technical knowledge?',
-    a: "Zero technical knowledge required. Your report is written in plain business language, and every recommendation includes a clear explanation of what to do and why it matters for your AI recommendation rate.",
+    a: "None. Your report is written in clear business language. Every recommendation includes a plain-English explanation of what to do, why it matters for your AI recommendation rate, and how hard it is to implement.",
   },
   {
-    q: 'How is this different from regular SEO?',
-    a: "Traditional SEO optimizes for search engine ranking algorithms. AI trust optimization focuses on the signals language models use to select businesses for recommendations — citation consistency, authority indicators, llms.txt, structured data, and conversational content. Different systems, different signals.",
+    q: 'How is this different from SEO?',
+    a: "Traditional SEO optimizes for search engine ranking algorithms. AI trust optimization targets the signals language models use when selecting sources for recommendations — citation authority, structured data, llms.txt, AI crawler access, and conversational content. Different systems, different signals, different outcomes.",
   },
   {
-    q: 'What do I get after the check?',
-    a: "A full CiteCheck AI Trust Report: your score across 5 categories, live competitor comparison, detected trust gaps with severity ratings, and a prioritized action plan. You can implement quick wins yourself or engage our team for a Full AI Trust Audit with 90-day roadmap.",
+    q: 'What do I get from the free check?',
+    a: "A full CiteCheck AI Trust Report: your score across 5 dimensions, live competitor comparison, detected trust gaps with severity ratings, and a prioritized action plan. Implement quick wins yourself, or engage our team for a Full AI Trust Audit with 90-day roadmap.",
   },
 ]
 
-/* ─────────────────────────────────────────────
-   PAGE
-───────────────────────────────────────────── */
+/* ── Page ── */
 
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <Navbar />
 
-      {/* ── HERO ── */}
+      {/* HERO */}
       <section className="relative min-h-screen flex flex-col items-center justify-center text-center px-6 pt-28 pb-24 mesh-bg overflow-hidden">
-        {/* Dot grid overlay */}
-        <div className="absolute inset-0 dot-grid opacity-[0.35] pointer-events-none" />
+        <div className="absolute inset-0 dot-grid opacity-[0.3] pointer-events-none" />
 
-        {/* Badge */}
         <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold badge-local mb-8 shadow-card">
             <Sparkles className="w-3.5 h-3.5" />
-            AI Citation & Trust Intelligence · Powered by OptiScale Advisors
+            AI Trust & Visibility Intelligence
           </span>
         </motion.div>
 
-        {/* Headline */}
         <motion.h1
           className="font-heading font-black text-5xl md:text-7xl lg:text-8xl leading-[0.93] tracking-tight max-w-5xl mb-6"
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         >
-          See if AI{' '}
-          <span className="gradient-text">trusts and recommends</span>
-          <br className="hidden sm:block" />
-          {' '}your business.
+          Understand how AI systems{' '}
+          <span className="gradient-text">perceive your brand.</span>
         </motion.h1>
 
-        {/* Sub-headline */}
         <motion.p
           className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed mb-10"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
         >
-          Discover how visible and trustworthy your business appears across ChatGPT, Google AI Overviews,
-          Gemini, and AI-powered search — before your competitors get there first.
+          Monitor your visibility across ChatGPT, Google AI Overviews, Gemini, and AI-powered search systems —
+          and take control of how AI recommends your business.
         </motion.p>
 
-        {/* CTAs */}
         <motion.div
           className="flex flex-col sm:flex-row items-center gap-4 mb-12"
           initial={{ opacity: 0, y: 20 }}
@@ -420,7 +402,6 @@ export default function HomePage() {
           </Button>
         </motion.div>
 
-        {/* Platform chips */}
         <motion.div
           className="flex flex-wrap items-center justify-center gap-2 mb-8"
           initial="hidden"
@@ -430,7 +411,6 @@ export default function HomePage() {
           {platforms.map(p => <PlatformChip key={p.name} {...p} />)}
         </motion.div>
 
-        {/* Trust line */}
         <motion.div
           className="flex items-center gap-6"
           initial={{ opacity: 0 }}
@@ -445,7 +425,6 @@ export default function HomePage() {
           ))}
         </motion.div>
 
-        {/* Scroll cue */}
         <motion.div
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
           animate={{ y: [0, 8, 0] }}
@@ -455,7 +434,7 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      {/* ── STATS ── */}
+      {/* STATS */}
       <section className="border-y border-border bg-card">
         <div className="max-w-6xl mx-auto px-6 py-12">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -464,7 +443,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── PROBLEM ── */}
+      {/* PROBLEM */}
       <section className="py-28 px-6 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-20 items-center">
@@ -473,22 +452,22 @@ export default function HomePage() {
                 The AI Search Shift
               </div>
               <h2 className="font-heading font-black text-4xl md:text-5xl leading-[1.05] mb-6">
-                Your competitors are becoming more trusted by AI.{' '}
-                <span className="gradient-text">Are you?</span>
+                AI systems are the new gatekeepers of discovery.{' '}
+                <span className="gradient-text">Is your brand trusted?</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-5 text-base">
-                Millions of customers now use ChatGPT, Gemini, and Google AI Overviews to find local services.
-                These AI systems recommend businesses based on trust and citation signals most business owners don&apos;t know exist.
+                Millions of customers now use ChatGPT, Gemini, and Google AI Overviews to research and discover businesses.
+                These AI systems recommend brands based on trust and citation signals that most companies have never measured.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8 text-base">
-                If your business lacks the right AI trust signals, you&apos;re invisible to a growing segment
-                of your market — even if your traditional SEO is perfect.
+                If your brand lacks the right AI trust signals, you&apos;re invisible to a rapidly growing segment
+                of your market — even if your traditional search presence is strong.
               </p>
               <ul className="space-y-3.5">
                 {[
                   '73% of businesses are missing from AI recommendations entirely',
-                  'AI search intent growing 40% month-over-month',
-                  'Businesses recommended by AI see 2–3× more qualified inquiries',
+                  'AI-powered search intent growing 40% month over month',
+                  'Businesses trusted by AI receive 2–3× more qualified inquiries',
                 ].map(item => (
                   <li key={item} className="flex items-start gap-3">
                     <div className="w-5 h-5 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center shrink-0 mt-0.5">
@@ -502,21 +481,21 @@ export default function HomePage() {
 
             <Section delay={0.15}>
               <div className="rounded-2xl border border-border bg-card shadow-card-md p-6 space-y-3">
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-5">AI Recommendation Trust Snapshot</div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-5">AI Recommendation Intelligence Snapshot</div>
                 {[
-                  { name: 'Top Competitor',   score: 78, status: 'Trusted & cited by ChatGPT',      good: true  },
-                  { name: 'Your Business',    score: 31, status: 'Missing from AI results',          good: false },
-                  { name: 'Other Competitor', score: 62, status: 'Appears in Gemini answers',        good: true  },
+                  { name: 'Meridian Legal Group', score: 78, status: 'Trusted & cited by ChatGPT',   good: true  },
+                  { name: 'Your Brand',            score: 31, status: 'Missing from AI results',      good: false },
+                  { name: 'Apex Advisory Co.',     score: 62, status: 'Appears in Gemini answers',    good: true  },
                 ].map(({ name, score, status, good }) => (
-                  <div key={name} className={`rounded-xl p-4 border ${good ? 'border-border bg-secondary/40' : 'bg-rose-50 border-rose-200'}`}>
+                  <div key={name} className={`rounded-xl p-4 border ${good ? 'border-border bg-secondary/40' : 'border-destructive/30 bg-destructive/8'}`}>
                     <div className="flex items-center justify-between mb-2.5">
                       <span className="text-sm font-semibold text-foreground">{name}</span>
-                      <span className={`text-2xl font-heading font-black ${good ? 'text-primary' : 'text-rose-500'}`}>{score}</span>
+                      <span className={`text-2xl font-heading font-black ${good ? 'text-primary' : 'text-destructive'}`}>{score}</span>
                     </div>
                     <div className="h-2 rounded-full bg-secondary overflow-hidden mb-2.5">
-                      <div className={`h-full rounded-full ${good ? 'bg-primary' : 'bg-rose-400'}`} style={{ width: `${score}%` }} />
+                      <div className={`h-full rounded-full ${good ? 'bg-primary' : 'bg-destructive/60'}`} style={{ width: `${score}%` }} />
                     </div>
-                    <span className={`text-xs font-medium ${good ? 'text-muted-foreground' : 'text-rose-600'}`}>{status}</span>
+                    <span className={`text-xs font-medium ${good ? 'text-muted-foreground' : 'text-destructive'}`}>{status}</span>
                   </div>
                 ))}
               </div>
@@ -525,16 +504,16 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── HOW IT WORKS ── */}
+      {/* HOW IT WORKS */}
       <section id="how-it-works" className="py-28 px-6 section-alt border-y border-border">
         <div className="max-w-7xl mx-auto">
           <Section className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold badge-local mb-5">
-              Simple Process
+              How it works
             </div>
-            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">How CiteCheck works</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">From scan to AI visibility intelligence</h2>
             <p className="text-muted-foreground max-w-lg mx-auto text-base">
-              Real data from your live website. Not templates, not estimates. Your actual AI trust posture.
+              Real data from your live website. Not estimates, not templates. Your actual AI trust posture.
             </p>
           </Section>
           <StaggerGrid className="grid md:grid-cols-3 gap-6">
@@ -543,28 +522,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── TRUST SIGNALS EXPLAINER ── */}
+      {/* TRUST SIGNALS EXPLAINER */}
       <section className="py-28 px-6 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-2 gap-20 items-center">
             <Section delay={0.1}>
               <div className="rounded-2xl border border-border bg-card shadow-card-md p-7 space-y-4">
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">What CiteCheck checks on your live site</div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">What CiteCheck reads from your live site</div>
                 {[
-                  { icon: Lock,       label: 'AI Crawler Access',     sub: 'GPTBot, ClaudeBot, PerplexityBot access in robots.txt',     ok: false },
-                  { icon: Globe,      label: 'llms.txt File',          sub: 'AI-readable business description file at /llms.txt',        ok: false },
-                  { icon: BarChart2,  label: 'Schema Markup',          sub: 'JSON-LD structured data: LocalBusiness, FAQPage, Review',   ok: true  },
-                  { icon: Shield,     label: 'HTTPS & Sitemap',        sub: 'Technical trust baseline signals',                          ok: true  },
-                  { icon: TrendingUp, label: 'FAQ & Content Signals',  sub: 'Conversational content AI can extract and cite',            ok: false },
+                  { icon: Lock,       label: 'AI Crawler Access',     sub: 'GPTBot, ClaudeBot, PerplexityBot permissions in robots.txt',  ok: false },
+                  { icon: Globe,      label: 'llms.txt File',          sub: 'AI-readable business context file at /llms.txt',             ok: false },
+                  { icon: BarChart2,  label: 'Schema Markup',          sub: 'JSON-LD structured data: Organization, FAQPage, Review',     ok: true  },
+                  { icon: Shield,     label: 'HTTPS & Sitemap',        sub: 'Technical trust baseline signals',                            ok: true  },
+                  { icon: TrendingUp, label: 'Content Signals',        sub: 'Conversational content AI can extract, cite, and reference', ok: false },
                 ].map(({ icon: Icon, label, sub, ok }) => (
-                  <div key={label} className={`flex items-start gap-4 rounded-xl p-4 border ${ok ? 'border-border bg-secondary/30' : 'bg-rose-50 border-rose-200'}`}>
-                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${ok ? 'bg-primary/10 border border-primary/20' : 'bg-rose-100 border-rose-200'}`}>
-                      <Icon className={`w-4 h-4 ${ok ? 'text-primary' : 'text-rose-500'}`} />
+                  <div key={label} className={`flex items-start gap-4 rounded-xl p-4 border ${ok ? 'border-border bg-secondary/30' : 'border-destructive/30 bg-destructive/8'}`}>
+                    <div className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 ${ok ? 'bg-primary/10 border border-primary/20' : 'bg-destructive/10 border border-destructive/20'}`}>
+                      <Icon className={`w-4 h-4 ${ok ? 'text-primary' : 'text-destructive'}`} />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between gap-2 mb-0.5">
                         <span className="text-sm font-semibold text-foreground">{label}</span>
-                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${ok ? 'bg-primary/10 text-primary' : 'bg-rose-100 text-rose-600'}`}>
+                        <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${ok ? 'bg-primary/10 text-primary' : 'bg-destructive/10 text-destructive'}`}>
                           {ok ? 'OK' : 'Issue'}
                         </span>
                       </div>
@@ -576,23 +555,23 @@ export default function HomePage() {
             </Section>
             <Section delay={0.2}>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold badge-local mb-6">
-                What We Analyze
+                Signal Intelligence
               </div>
               <h2 className="font-heading font-black text-4xl md:text-5xl leading-[1.05] mb-6">
-                How AI platforms choose which businesses to{' '}
+                How AI platforms decide which brands to{' '}
                 <span className="gradient-text">trust and recommend</span>
               </h2>
               <p className="text-muted-foreground leading-relaxed mb-6 text-base">
-                AI systems don&apos;t rank businesses the way Google does. They look for specific trust signals —
-                structured authority data, citation-friendly content, and explicit AI access permissions.
+                AI systems don&apos;t rank brands the way search engines do. They look for specific authority signals —
+                structured data, citation-friendly content, and explicit AI access permissions.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8 text-base">
-                CiteCheck reads your live website and tells you exactly which signals are missing,
-                which are strong, and what to fix first for the highest recommendation impact.
+                CiteCheck reads your live site and tells you exactly which signals are missing, which are strong,
+                and what to fix first for the highest recommendation impact.
               </p>
               <Link href="/scan">
                 <Button className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-primary gap-2 font-semibold rounded-xl h-12 px-7">
-                  Check my trust signals
+                  Check my AI trust signals
                   <ArrowRight className="w-4 h-4" />
                 </Button>
               </Link>
@@ -601,34 +580,34 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── FEATURES ── */}
+      {/* FEATURES */}
       <section id="features" className="py-28 px-6 section-alt border-y border-border">
         <div className="max-w-7xl mx-auto">
           <Section className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold badge-local mb-5">
-              Everything you need
+              Platform capabilities
             </div>
-            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">Your complete AI trust intelligence picture</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">Complete AI trust intelligence</h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-base">
-              One check. Every AI platform. A clear path to becoming the business AI trusts and recommends.
+              One check. Every AI platform. A clear path to becoming the brand AI systems trust and recommend.
             </p>
           </Section>
           <StaggerGrid className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {features.map((f, i) => <FeatureCard key={f.title} {...f} index={i} />)}
+            {features.map(f => <FeatureCard key={f.title} {...f} />)}
           </StaggerGrid>
         </div>
       </section>
 
-      {/* ── REPORT PREVIEW ── */}
+      {/* REPORT PREVIEW */}
       <section id="preview" className="py-28 px-6 bg-background">
         <div className="max-w-7xl mx-auto">
           <Section className="text-center mb-14">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold badge-local mb-5">
-              Live Report Preview
+              Sample report
             </div>
-            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">What your AI Trust Report looks like</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl mb-4">Your AI Trust Intelligence report</h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-base">
-              Real-data scoring across 5 trust dimensions, with live competitor benchmarking built in.
+              Scored across 5 trust dimensions, with live competitor benchmarking and a clear action plan.
             </p>
           </Section>
           <StaggerGrid>
@@ -637,14 +616,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── TESTIMONIALS ── */}
+      {/* TESTIMONIALS */}
       <section className="py-28 px-6 section-alt border-y border-border">
         <div className="max-w-7xl mx-auto">
           <Section className="text-center mb-16">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold badge-local mb-5">
-              Results
+              Outcomes
             </div>
-            <h2 className="font-heading font-black text-4xl md:text-5xl">Businesses that got trusted by AI</h2>
+            <h2 className="font-heading font-black text-4xl md:text-5xl">Brands that got trusted by AI</h2>
           </Section>
           <StaggerGrid className="grid md:grid-cols-3 gap-5">
             {testimonials.map(t => <TestimonialCard key={t.name} {...t} />)}
@@ -652,7 +631,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── FAQ ── */}
+      {/* FAQ */}
       <section id="faq" className="py-28 px-6 bg-background">
         <div className="max-w-3xl mx-auto">
           <Section className="text-center mb-14">
@@ -667,9 +646,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── FINAL CTA ── */}
+      {/* FINAL CTA */}
       <section className="py-32 px-6 relative overflow-hidden">
-        {/* Gradient background */}
         <div className="absolute inset-0 mesh-bg" />
         <div className="absolute inset-0 dot-grid opacity-25 pointer-events-none" />
 
@@ -684,8 +662,8 @@ export default function HomePage() {
             </motion.div>
 
             <h2 className="font-heading font-black text-5xl md:text-6xl leading-[0.95] mb-6">
-              Start getting trusted<br />
-              <span className="gradient-text">by AI search today.</span>
+              Know exactly where AI<br />
+              <span className="gradient-text">stands on your brand.</span>
             </h2>
             <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto leading-relaxed">
               Your free AI Trust Check takes under 60 seconds. No credit card. No commitment.
