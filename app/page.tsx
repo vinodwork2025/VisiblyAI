@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRef } from 'react'
-import { motion, useInView } from 'framer-motion'
+import { motion, useInView, type Variants } from 'framer-motion'
 import {
   ArrowRight, CheckCircle, Zap, Target,
   Search, BarChart2, ChevronDown, Eye, Brain, Globe,
@@ -14,18 +14,18 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
 /* ── Animation variants ── */
-const fadeUp = {
+const fadeUp: Variants = {
   hidden:  { opacity: 0, y: 32 },
   visible: { opacity: 1, y: 0,  transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
 }
-const fadeIn = {
+const fadeIn: Variants = {
   hidden:  { opacity: 0 },
   visible: { opacity: 1, transition: { duration: 0.5, ease: 'easeOut' } },
 }
-const stagger = {
+const stagger: Variants = {
   visible: { transition: { staggerChildren: 0.08 } },
 }
-const staggerSlow = {
+const staggerSlow: Variants = {
   visible: { transition: { staggerChildren: 0.12 } },
 }
 
