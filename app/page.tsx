@@ -161,30 +161,32 @@ function HeroScoreCard() {
   ]
 
   const platforms: { name: string; icon: React.ReactNode; bg: string; glow: string; border?: string }[] = [
-    { name: 'ChatGPT',    icon: <OpenAIIcon size={16} />,   bg: '#10A37F', glow: '#10A37F' },
-    { name: 'Gemini',     icon: <GeminiIcon size={16} />,   bg: '#1a1a2e', glow: '#4285F4', border: '1px solid rgba(66,133,244,0.40)' },
-    { name: 'Perplexity', icon: <PerplexityIcon size={14} />, bg: '#1A1230', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.45)' },
-    { name: 'Google AI',  icon: <GoogleAIIcon size={16} />, bg: '#fff',    glow: '#4285F4' },
+    { name: 'ChatGPT',    icon: <OpenAIIcon    size={16} color="white" />, bg: '#10A37F', glow: '#10A37F' },
+    { name: 'Gemini',     icon: <GeminiIcon    size={16} color="white" />, bg: 'linear-gradient(135deg,#4285F4,#9B72CB)', glow: '#4285F4' },
+    { name: 'Perplexity', icon: <PerplexityIcon size={13} color="white" />, bg: '#1c0f3f', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.5)' },
+    { name: 'Google AI',  icon: <GoogleAIIcon  size={16} />,               bg: '#1e1e2e', glow: '#4285F4', border: '1px solid rgba(66,133,244,0.35)' },
   ]
 
-  /* floating icon config — orbit the card */
+  /* floating icons — match reference: ChatGPT top-right, Gemini mid-right, Perplexity bottom */
   const floaters: Parameters<typeof FloatIcon>[0][] = [
     {
-      label: 'ChatGPT', bg: '#10A37F', glow: '#10A37F', size: 56,
-      icon: <OpenAIIcon size={26} />,
-      style: { top: -28, right: -24 }, delay: 0.8, duration: 6,
+      label: 'ChatGPT', bg: '#10A37F', glow: '#10A37F', size: 54,
+      icon: <OpenAIIcon size={26} color="white" />,
+      style: { top: -30, right: -20 }, delay: 0.8, duration: 6,
     },
     {
-      label: 'Claude', bg: 'linear-gradient(135deg,#D97706,#F59E0B)', glow: '#D97706', size: 46,
-      icon: <ClaudeIcon size={22} />,
-      style: { top: '36%', right: -52 }, delay: 1.1, duration: 7,
+      label: 'Gemini', bg: 'linear-gradient(145deg,#1a1a3e,#2d2d6b)', glow: '#4285F4',
+      border: '1px solid rgba(66,133,244,0.45)',
+      size: 44,
+      icon: <GeminiIcon size={22} color="white" />,
+      style: { top: '38%', right: -50 }, delay: 1.1, duration: 7,
     },
     {
-      label: 'Perplexity', bg: '#1A1230', glow: '#9B5DE5',
-      border: '1px solid rgba(155,93,229,0.55)',
-      size: 40,
-      icon: <PerplexityIcon size={18} />,
-      style: { bottom: 56, right: -38 }, delay: 1.35, duration: 8,
+      label: 'Perplexity', bg: '#1c0f3f', glow: '#9B5DE5',
+      border: '1px solid rgba(155,93,229,0.50)',
+      size: 38,
+      icon: <PerplexityIcon size={17} color="white" />,
+      style: { bottom: 60, right: -36 }, delay: 1.35, duration: 8,
     },
   ]
 
