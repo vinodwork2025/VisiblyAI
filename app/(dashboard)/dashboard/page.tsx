@@ -68,10 +68,10 @@ export default async function DashboardPage() {
       <div className="mb-10">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-local text-xs font-medium mb-4">
           <Sparkles className="w-3 h-3" />
-          CiteCheck AI Trust Dashboard
+          VisiblyAI Dashboard
         </div>
         <h1 className="font-heading font-black text-3xl md:text-4xl mb-2">
-          {scans.length > 0 ? `Welcome back` : 'Welcome to CiteCheck'}
+          {scans.length > 0 ? `Welcome back` : 'Welcome to VisiblyAI'}
         </h1>
         <p className="text-muted-foreground">
           {scans.length > 0

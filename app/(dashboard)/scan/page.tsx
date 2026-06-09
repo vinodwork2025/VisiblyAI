@@ -16,10 +16,12 @@ const STEPS = [
 ]
 
 const SERVICE_OPTIONS = [
-  'Roofing', 'Dental / Dentistry', 'HVAC', 'Plumbing', 'Legal / Law Firm',
-  'Real Estate', 'Landscaping', 'Accounting / CPA', 'Chiropractic',
-  'Physical Therapy', 'Gym / Fitness', 'Restaurant', 'Retail', 'Electrician',
-  'Painting', 'Flooring', 'Pest Control', 'Auto Repair', 'Other',
+  'Architecture / Design', 'Interior Design', 'Builder / Contractor', 'Real Estate',
+  'Dental Clinic', 'Medical Clinic / Hospital', 'Physiotherapy', 'Yoga / Fitness',
+  'Salon / Beauty', 'Spa', 'Restaurant', 'Catering',
+  'Coaching / Tuition', 'CA / Accounting', 'Legal / Law',
+  'Digital Marketing', 'IT Services / Software', 'Electrician / Plumber',
+  'Other',
 ]
 
 export default function ScanPage() {
@@ -32,6 +34,7 @@ export default function ScanPage() {
     city: '',
     primaryService: '',
     competitors: '',
+    honeypot: '',
   })
   const [errors, setErrors] = useState<Partial<ScanFormData>>({})
 
@@ -77,10 +80,10 @@ export default function ScanPage() {
         <div className="text-center mb-8">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full badge-local text-xs font-medium mb-4">
             <Search className="w-3 h-3" />
-            Free AI Trust Check
+            Free AI Visibility Check
           </div>
           <h1 className="font-heading font-black text-3xl md:text-4xl mb-2">
-            Check your AI trust signals
+            Check your AI visibility
           </h1>
           <p className="text-muted-foreground text-sm">
             Step {step} of {STEPS.length} · {STEPS[step - 1].description}
@@ -114,6 +117,18 @@ export default function ScanPage() {
         {/* Form card */}
         <div className="rounded-2xl border border-border bg-card p-6 md:p-8">
 
+          {/* Honeypot — hidden from real users, filled by bots */}
+          <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}>
+            <input
+              type="text"
+              name="website_check"
+              tabIndex={-1}
+              autoComplete="off"
+              value={form.honeypot ?? ''}
+              onChange={e => update('honeypot', e.target.value)}
+            />
+          </div>
+
           {/* Step 1 */}
           {step === 1 && (
             <div className="space-y-5 animate-fade-up">
@@ -123,7 +138,7 @@ export default function ScanPage() {
                 </Label>
                 <Input
                   id="businessName"
-                  placeholder="e.g. Apex Roofing Company"
+                  placeholder="e.g. Design Intend Studio"
                   value={form.businessName}
                   onChange={e => update('businessName', e.target.value)}
                   className={`h-12 bg-secondary border-border text-base ${errors.businessName ? 'border-destructive' : ''}`}
@@ -137,7 +152,7 @@ export default function ScanPage() {
                 </Label>
                 <Input
                   id="websiteUrl"
-                  placeholder="e.g. apexroofing.com"
+                  placeholder="e.g. designintend.com"
                   value={form.websiteUrl}
                   onChange={e => update('websiteUrl', e.target.value)}
                   className={`h-12 bg-secondary border-border text-base ${errors.websiteUrl ? 'border-destructive' : ''}`}
@@ -157,7 +172,7 @@ export default function ScanPage() {
                 </Label>
                 <Input
                   id="city"
-                  placeholder="e.g. Dallas, TX"
+                  placeholder="e.g. Hosur, Bangalore, Chennai"
                   value={form.city}
                   onChange={e => update('city', e.target.value)}
                   className={`h-12 bg-secondary border-border text-base ${errors.city ? 'border-destructive' : ''}`}
@@ -202,13 +217,13 @@ export default function ScanPage() {
                 </div>
                 <Textarea
                   id="competitors"
-                  placeholder="e.g. bestplumber.com, dallas-plumbers.com&#10;&#10;Enter URLs for live competitor analysis, or just names"
+                  placeholder="e.g. rivalfirm.com, competitor.co.in&#10;&#10;Enter URLs or names. We'll check which appear in Google AI searches."
                   value={form.competitors}
                   onChange={e => update('competitors', e.target.value)}
                   className="bg-secondary border-border resize-none text-sm min-h-[120px]"
                 />
                 <p className="text-xs text-muted-foreground mt-2">
-                  Add URLs for live competitor scanning, or just names for estimated comparison.
+                  Google AI will show who actually appears in search results for your service.
                 </p>
               </div>
 
@@ -250,7 +265,7 @@ export default function ScanPage() {
                 disabled={loading}
                 className="bg-primary text-primary-foreground hover:bg-primary/90 gap-2 teal-glow"
               >
-                {loading ? 'Starting scan…' : 'Run My AI Scan'}
+                {loading ? 'Starting scan…' : 'Run AI Visibility Check'}
                 {!loading && <ArrowRight className="w-4 h-4" />}
               </Button>
             )}
@@ -258,7 +273,7 @@ export default function ScanPage() {
         </div>
 
         <p className="text-center text-xs text-muted-foreground mt-4">
-          Free scan · No credit card · Results in under 60 seconds
+          Free · No credit card · Live Google AI queries run for every scan
         </p>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PROTECTED = ['/dashboard', '/scan', '/results', '/reports']
+const PROTECTED = ['/dashboard', '/reports']
 
 export async function middleware(request: NextRequest) {
   // Skip auth when Supabase is not configured (local demo mode)

@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <Zap className="w-4 h-4 text-primary-foreground" />
             </div>
             <span className="font-heading font-bold text-base">
-              Cite<span className="text-primary">Check</span>
+              Visibly<span className="text-primary">AI</span>
             </span>
           </Link>
         </div>
@@ -67,7 +67,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <div className="w-6 h-6 rounded-md bg-primary flex items-center justify-center">
             <Zap className="w-3.5 h-3.5 text-primary-foreground" />
           </div>
-          <span className="font-heading font-bold text-sm">Cite<span className="text-primary">Check</span></span>
+          <span className="font-heading font-bold text-sm">Visibly<span className="text-primary">AI</span></span>
         </Link>
         <nav className="flex items-center gap-1">
           {nav.slice(0, 3).map(({ href, icon: Icon, label }) => (

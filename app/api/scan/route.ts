@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
-import { runRealScan, runMockScan } from '@/lib/scan-engine'
+import { runRealScan } from '@/lib/scan-engine'
+import { checkGeminiVisibility } from '@/lib/visibility-gemini'
 import type { ScanFormData, ScanResult } from '@/types'
 
 export const runtime = 'edge'
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
 const SUPABASE_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const OPENAI_KEY   = process.env.OPENAI_API_KEY
 
 function createSupabase(request: NextRequest) {
   if (!SUPABASE_URL || !SUPABASE_KEY) return null
@@ -19,69 +19,19 @@ function createSupabase(request: NextRequest) {
   })
 }
 
-async function enhanceWithAI(result: ScanResult, form: ScanFormData): Promise<ScanResult> {
-  if (!OPENAI_KEY) return result
+// ── Simple best-effort rate limit (in-memory, per Worker instance) ────────────
+// Not persistent across CF Worker restarts/instances. Use CF WAF rules for
+// production-grade limiting. Provides basic protection in dev/staging.
+const scanTimes = new Map<string, number[]>()
+const RATE_LIMIT = 5           // max scans per window
+const RATE_WINDOW = 60 * 60 * 1000  // 1 hour
 
-  try {
-    const weakest = Object.entries(result.categories)
-      .sort(([, a], [, b]) => (a as number) - (b as number))
-      .slice(0, 2)
-      .map(([k, v]) => `${k}: ${v}`)
-      .join(', ')
-
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [{
-          role: 'user',
-          content: `You are an AI SEO expert. Generate 3 specific, actionable JSON recommendations to improve AI search visibility.
-
-Business: ${form.businessName}
-Location: ${form.city}
-Service: ${form.primaryService}
-Overall AI Trust Score: ${result.overallScore}/100
-Weakest categories: ${weakest}
-
-Return valid JSON only: {"recommendations": [{"title": "string max 55 chars", "description": "string max 160 chars", "impact": "high|medium|low", "effort": "easy|medium|hard", "category": "string"}]}`,
-        }],
-        response_format: { type: 'json_object' },
-        max_tokens: 600,
-        temperature: 0.7,
-      }),
-      signal: AbortSignal.timeout(9000),
-    })
-
-    if (!res.ok) return result
-
-    const data = await res.json() as { choices?: Array<{ message?: { content?: string } }> }
-    const content = data.choices?.[0]?.message?.content
-    if (!content) return result
-
-    const parsed = JSON.parse(content) as { recommendations?: unknown[] }
-    const items = Array.isArray(parsed.recommendations) ? parsed.recommendations : []
-    if (items.length === 0) return result
-
-    const aiRecs = items.slice(0, 3).map((item, i) => {
-      const rec = item as Record<string, string>
-      return {
-        id: `ai-${Date.now()}-${i}`,
-        title: rec.title ?? 'AI Recommendation',
-        description: rec.description ?? '',
-        impact: (rec.impact as 'high' | 'medium' | 'low') ?? 'medium',
-        effort: (rec.effort as 'easy' | 'medium' | 'hard') ?? 'medium',
-        category: rec.category ?? 'AI Optimization',
-      }
-    })
-
-    return { ...result, recommendations: [...aiRecs, ...result.recommendations.slice(0, 3)] }
-  } catch {
-    return result
-  }
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now()
+  const times = (scanTimes.get(ip) ?? []).filter(t => now - t < RATE_WINDOW)
+  if (times.length >= RATE_LIMIT) return false
+  scanTimes.set(ip, [...times, now])
+  return true
 }
 
 async function persistScan(supabase: ReturnType<typeof createSupabase>, result: ScanResult, userId: string) {
@@ -102,48 +52,67 @@ async function persistScan(supabase: ReturnType<typeof createSupabase>, result: 
     recommendations: result.recommendations,
     quick_wins: result.quickWins,
     competitor_comparison: result.competitorComparison,
+    gemini_visibility: result.geminiVisibility ?? null,
     created_at: result.createdAt,
   })
 }
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit by IP
+    const ip = request.headers.get('cf-connecting-ip') ?? request.headers.get('x-forwarded-for') ?? 'unknown'
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json({ error: 'Too many scans. Please wait before trying again.' }, { status: 429 })
+    }
+
     const body = await request.json() as ScanFormData
+
+    // Honeypot — bots fill hidden fields, humans don't
+    if (body.honeypot) {
+      return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+    }
 
     if (!body.businessName || !body.websiteUrl || !body.city || !body.primaryService) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    // Run scan (real with fallback to mock)
-    let result: ScanResult
-    try {
-      result = await runRealScan(body)
-    } catch {
-      result = runMockScan(body)
+    if (!process.env.GEMINI_API_KEY) {
+      return NextResponse.json(
+        { error: 'Scanning is not configured. Please set GEMINI_API_KEY to enable AI visibility checks.' },
+        { status: 503 }
+      )
     }
 
-    // Enhance with AI recommendations (best-effort, non-blocking)
-    result = await enhanceWithAI(result, body)
+    // Run Gemini visibility check and site technical scan in parallel
+    const [geminiResult, result] = await Promise.all([
+      checkGeminiVisibility(body.businessName, body.websiteUrl, body.city, body.primaryService),
+      // We run a preliminary site scan first to get technical data,
+      // then the full scan merges both. Since analyzeSite is internal,
+      // we pass gemini result to runRealScan after both finish.
+      Promise.resolve(null),
+    ])
 
-    // Persist to DB if user is authenticated
+    // Full scan with Gemini data
+    const finalResult: ScanResult = await runRealScan(body, geminiResult ?? undefined)
+    void result  // unused placeholder
+
+    // Persist to DB if user is authenticated (non-blocking)
     try {
       const supabase = createSupabase(request)
       if (supabase) {
         const { data: { user } } = await supabase.auth.getUser()
-        if (user) {
-          await persistScan(supabase, result, user.id)
-        }
+        if (user) await persistScan(supabase, finalResult, user.id)
       }
     } catch {
-      // DB failure doesn't break scan response
+      // DB failure does not break scan response
     }
 
-    return NextResponse.json(result)
+    return NextResponse.json(finalResult)
   } catch {
-    return NextResponse.json({ error: 'Failed to process scan' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to process scan. Please try again.' }, { status: 500 })
   }
 }
 
 export async function GET() {
-  return NextResponse.json({ status: 'VisiblyAI Scan API v1' })
+  return NextResponse.json({ status: 'VisiblyAI Scan API v2 — Gemini-powered' })
 }

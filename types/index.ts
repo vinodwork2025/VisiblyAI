@@ -4,10 +4,11 @@ export interface ScanFormData {
   city: string
   primaryService: string
   competitors: string
+  honeypot?: string   // must be empty — bot trap
 }
 
 export interface CategoryScores {
-  aiRecommendationVisibility: number
+  aiRecommendationVisibility: number   // Gemini-measured, 0–100
   localAuthority: number
   citationTrustSignals: number
   contentCoverage: number
@@ -16,7 +17,9 @@ export interface CategoryScores {
 
 export interface CompetitorData {
   name: string
-  score: number
+  score: number       // Gemini appearance rate 0–100, or overall score if Gemini failed
+  domain?: string
+  appearances?: number  // raw count out of totalQuestions
   isUser?: boolean
 }
 
@@ -54,6 +57,22 @@ export interface QuickWin {
 
 export type Grade = 'A' | 'B' | 'C' | 'D' | 'F'
 
+export interface GeminiQuestionResult {
+  question: string
+  appeared: boolean
+  competitorsSeen: { name: string; domain?: string }[]
+  citedUrls: string[]
+}
+
+export interface GeminiVisibilityResult {
+  appearedInCount: number
+  totalQuestions: number
+  visibilityRate: number
+  questionResults: GeminiQuestionResult[]
+  topCompetitors: { name: string; domain?: string; appearances: number }[]
+  error?: string
+}
+
 export interface ScanResult {
   id: string
   businessName: string
@@ -70,6 +89,8 @@ export interface ScanResult {
   competitorComparison: CompetitorData[]
   grade: Grade
   createdAt: string
+  scanMethod: 'real' | 'partial' | 'url-only'
+  geminiVisibility?: GeminiVisibilityResult
 }
 
 export interface SavedReport {

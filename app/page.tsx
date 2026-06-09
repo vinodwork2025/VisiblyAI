@@ -154,17 +154,24 @@ function HeroScoreCard() {
   const offset = circ * (1 - score / 100)
 
   const competitors = [
-    { name: 'Meridian Legal', s: 91, user: false, bar: 'linear-gradient(90deg,#059669,#10b981)' },
-    { name: 'Your Brand',     s: 87, user: true,  bar: 'linear-gradient(90deg,#2563eb,#10b981)' },
-    { name: 'Apex Advisory',  s: 54, user: false, bar: 'linear-gradient(90deg,#3b82f6,#6366f1)' },
-    { name: 'Vertex Group',   s: 43, user: false, bar: 'rgba(255,255,255,0.22)' },
+    { name: 'Meridian Legal', s: 91, user: false, bar: 'linear-gradient(90deg,#059669,#10b981)', delta: '+4' },
+    { name: 'Your Brand',     s: 87, user: true,  bar: 'linear-gradient(90deg,#2563eb,#10b981)', delta: '+12' },
+    { name: 'Apex Advisory',  s: 54, user: false, bar: 'linear-gradient(90deg,#3b82f6,#6366f1)', delta: '-3' },
+    { name: 'Vertex Group',   s: 43, user: false, bar: 'rgba(255,255,255,0.22)', delta: '-7' },
+    { name: 'Pinnacle Co.',   s: 31, user: false, bar: 'rgba(255,255,255,0.15)', delta: '0' },
   ]
 
-  const platforms: { name: string; icon: React.ReactNode; bg: string; glow: string; border?: string }[] = [
-    { name: 'ChatGPT',    icon: <OpenAIIcon    size={16} color="white" />, bg: '#10A37F', glow: '#10A37F' },
-    { name: 'Gemini',     icon: <GeminiIcon    size={16} color="white" />, bg: 'linear-gradient(135deg,#4285F4,#9B72CB)', glow: '#4285F4' },
-    { name: 'Perplexity', icon: <PerplexityIcon size={13} color="white" />, bg: '#1c0f3f', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.5)' },
-    { name: 'Google AI',  icon: <GoogleAIIcon  size={16} />,               bg: '#1e1e2e', glow: '#4285F4', border: '1px solid rgba(66,133,244,0.35)' },
+  const platforms: { name: string; icon: React.ReactNode; bg: string; glow: string; border?: string; score: number; bar: string }[] = [
+    { name: 'ChatGPT',    score: 91, bar: '#10A37F', icon: <OpenAIIcon    size={14} color="white" />, bg: '#10A37F', glow: '#10A37F' },
+    { name: 'Gemini',     score: 84, bar: '#4285F4', icon: <GeminiIcon    size={14} color="white" />, bg: 'linear-gradient(135deg,#4285F4,#9B72CB)', glow: '#4285F4' },
+    { name: 'Google AI',  score: 88, bar: '#34a853', icon: <GoogleAIIcon  size={14} />,               bg: '#1e1e2e', glow: '#4285F4', border: '1px solid rgba(66,133,244,0.35)' },
+    { name: 'Perplexity', score: 79, bar: '#9B5DE5', icon: <PerplexityIcon size={11} color="white" />, bg: '#1c0f3f', glow: '#9B5DE5', border: '1px solid rgba(155,93,229,0.5)' },
+  ]
+
+  const insights = [
+    { icon: TrendingUp, color: '#10b981', text: 'AI citation rate up 34% vs last month' },
+    { icon: AlertCircle, color: '#f59e0b', text: 'Missing schema on 3 key service pages' },
+    { icon: Award,       color: '#60a5fa', text: 'Ranked #1 for "legal advisor AI mentions"' },
   ]
 
   /* floating icons — match reference: ChatGPT top-right, Gemini mid-right, Perplexity bottom */
@@ -192,7 +199,7 @@ function HeroScoreCard() {
 
   return (
     <motion.div
-      className="relative"
+      className="relative h-full w-full"
       initial={{ opacity: 0, x: 48, y: 16 }}
       animate={{ opacity: 1, x: 0, y: 0 }}
       transition={{ duration: 1.0, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
@@ -215,12 +222,13 @@ function HeroScoreCard() {
 
       {/* Floating motion wrapper */}
       <motion.div
+        className="h-full"
         animate={{ y: [0, -13, 0] }}
         transition={{ duration: 7, repeat: Infinity, ease: 'easeInOut' }}
       >
         {/* Glass card */}
         <div
-          className="rounded-3xl overflow-hidden"
+          className="rounded-3xl overflow-hidden flex flex-col h-full"
           style={{
             background: 'linear-gradient(145deg, rgba(255,255,255,0.09) 0%, rgba(255,255,255,0.03) 100%)',
             backdropFilter: 'blur(48px) saturate(1.5)',
@@ -240,7 +248,7 @@ function HeroScoreCard() {
                 style={{ background: '#2563eb' }}>
                 <Zap className="w-3.5 h-3.5 text-white" />
               </div>
-              <span className="font-heading font-bold text-sm" style={{ color: 'rgba(255,255,255,0.92)' }}>CiteCheck</span>
+              <span className="font-heading font-bold text-sm" style={{ color: 'rgba(255,255,255,0.92)' }}>VisiblyAI</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -249,10 +257,10 @@ function HeroScoreCard() {
           </div>
 
           {/* Main split — score left / competitors right */}
-          <div className="grid grid-cols-[1fr_1fr]" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+          <div className="grid grid-cols-[1fr_1fr] flex-1" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
 
             {/* Left: Score gauge */}
-            <div className="p-6" style={{ borderRight: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="p-6 flex flex-col justify-center" style={{ borderRight: '1px solid rgba(255,255,255,0.07)' }}>
               <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
                 AI Trust Score
               </div>
@@ -294,23 +302,36 @@ function HeroScoreCard() {
               <p className="text-[9px] text-center leading-snug" style={{ color: 'rgba(255,255,255,0.35)' }}>
                 More visible than {score}%<br />of businesses in your niche
               </p>
+              <div className="grid grid-cols-3 gap-1.5 mt-3">
+                {[
+                  { label: 'Citations/wk', value: '47' },
+                  { label: 'Mentions',     value: '156' },
+                  { label: 'Niche Rank',   value: '#3' },
+                ].map(({ label, value }) => (
+                  <div key={label} className="rounded-lg py-1.5 px-1 text-center"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                    <div className="font-heading font-bold text-[11px]" style={{ color: 'rgba(255,255,255,0.80)' }}>{value}</div>
+                    <div className="text-[8px]" style={{ color: 'rgba(255,255,255,0.30)' }}>{label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* Right: Competitor bars */}
-            <div className="p-6">
+            <div className="p-6 flex flex-col justify-center">
               <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
                 Competition Comparison
               </div>
               <div className="space-y-2.5">
-                {competitors.map(({ name, s, user, bar }, i) => (
-                  <motion.div key={name} className="flex items-center gap-2"
+                {competitors.map(({ name, s, user, bar, delta }, i) => (
+                  <motion.div key={name} className="flex items-center gap-1.5"
                     initial={{ opacity: 0, x: -6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.4, delay: 1.3 + i * 0.08 }}
                   >
                     <div
                       className="text-[10px] font-medium shrink-0 truncate"
-                      style={{ width: 88, color: user ? '#60a5fa' : 'rgba(255,255,255,0.45)' }}
+                      style={{ width: 78, color: user ? '#60a5fa' : 'rgba(255,255,255,0.45)' }}
                     >
                       {name}
                     </div>
@@ -324,9 +345,18 @@ function HeroScoreCard() {
                     </div>
                     <div
                       className="text-[10px] font-bold tabular-nums shrink-0"
-                      style={{ width: 20, textAlign: 'right', color: user ? '#60a5fa' : 'rgba(255,255,255,0.38)' }}
+                      style={{ width: 18, textAlign: 'right', color: user ? '#60a5fa' : 'rgba(255,255,255,0.38)' }}
                     >
                       {s}
+                    </div>
+                    <div
+                      className="text-[8px] font-bold tabular-nums shrink-0"
+                      style={{
+                        width: 22, textAlign: 'right',
+                        color: delta.startsWith('+') ? '#10b981' : delta === '0' ? 'rgba(255,255,255,0.22)' : '#f87171',
+                      }}
+                    >
+                      {delta}
                     </div>
                   </motion.div>
                 ))}
@@ -334,35 +364,54 @@ function HeroScoreCard() {
             </div>
           </div>
 
-          {/* Platform visibility pills */}
+          {/* Platform visibility scores */}
           <div className="px-6 py-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
             <div className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.38)' }}>
-              Visibility Access in Platforms
+              Platform Visibility Scores
             </div>
-            <div className="flex items-center gap-3">
-              {platforms.map(({ name, icon, bg, glow, border }, i) => (
-                <motion.div key={name} className="flex flex-col items-center gap-1.5"
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: 1.85 + i * 0.07 }}
+            <div className="space-y-2">
+              {platforms.map(({ name, icon, bg, glow, border, score: pScore, bar }, i) => (
+                <motion.div key={name} className="flex items-center gap-2"
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.35, delay: 1.85 + i * 0.08 }}
                 >
                   <div
-                    className="relative flex items-center justify-center rounded-full text-white"
+                    className="flex items-center justify-center rounded-full shrink-0"
                     style={{
-                      width: 38, height: 38, background: bg,
+                      width: 22, height: 22, background: bg,
                       border: border ?? '1px solid rgba(255,255,255,0.15)',
-                      boxShadow: `0 0 14px ${glow}55`,
+                      boxShadow: `0 0 8px ${glow}44`,
                     }}
                   >
                     {icon}
-                    <div
-                      className="absolute -bottom-0.5 -right-0.5 flex items-center justify-center rounded-full"
-                      style={{ width: 13, height: 13, background: '#059669', border: '1.5px solid rgba(0,0,0,0.35)' }}
-                    >
-                      <CheckCircle className="w-2 h-2 text-white" />
-                    </div>
                   </div>
-                  <span className="text-[8px] text-center font-medium" style={{ color: 'rgba(255,255,255,0.32)' }}>{name}</span>
+                  <div className="text-[9px] font-medium shrink-0" style={{ width: 58, color: 'rgba(255,255,255,0.50)' }}>{name}</div>
+                  <div className="flex-1 rounded-full overflow-hidden" style={{ height: 4, background: 'rgba(255,255,255,0.07)' }}>
+                    <motion.div
+                      style={{ height: '100%', borderRadius: 9999, background: bar }}
+                      initial={{ width: 0 }}
+                      animate={{ width: `${pScore}%` }}
+                      transition={{ duration: 1.0, delay: 2.0 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                    />
+                  </div>
+                  <div className="text-[9px] font-bold tabular-nums shrink-0" style={{ width: 18, textAlign: 'right', color: 'rgba(255,255,255,0.55)' }}>{pScore}</div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          {/* Insights strip */}
+          <div className="px-6 py-3.5" style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}>
+            <div className="space-y-1.5">
+              {insights.map(({ icon: IIcon, color, text }, i) => (
+                <motion.div key={text} className="flex items-start gap-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 2.35 + i * 0.1 }}
+                >
+                  <IIcon className="w-3 h-3 shrink-0 mt-0.5" style={{ color }} />
+                  <span className="text-[9px] leading-snug" style={{ color: 'rgba(255,255,255,0.45)' }}>{text}</span>
                 </motion.div>
               ))}
             </div>
@@ -374,7 +423,7 @@ function HeroScoreCard() {
             style={{ background: 'rgba(255,255,255,0.025)' }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, delay: 2.0 }}
+            transition={{ duration: 0.5, delay: 2.6 }}
           >
             <Sparkles className="w-3 h-3 shrink-0 mt-0.5" style={{ color: '#60a5fa' }} />
             <p className="text-[10px] leading-snug" style={{ color: 'rgba(255,255,255,0.55)' }}>
@@ -586,7 +635,7 @@ function HeroSection() {
           </div>
 
           {/* ── RIGHT: Dashboard card ── */}
-          <div className="hidden md:block max-w-[480px] mx-auto lg:max-w-none">
+          <div className="hidden md:flex items-center h-[80vh]">
             <HeroScoreCard />
           </div>
         </div>
@@ -747,7 +796,7 @@ function ReportPreview() {
       <div className="flex items-start justify-between mb-7">
         <div>
           <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary bg-primary/10 border border-primary/20 px-3 py-1 rounded-full mb-3">
-            <Sparkles className="w-3 h-3" /> CiteCheck AI Trust Report
+            <Sparkles className="w-3 h-3" /> VisiblyAI Report
           </div>
           <div className="font-heading font-bold text-xl text-foreground">Vertex & Associates</div>
           <div className="text-sm text-muted-foreground">London, UK · Professional Services</div>
@@ -817,7 +866,7 @@ const stats = [
 
 const steps = [
   { number: '01', icon: Search,   title: 'Enter your business details',       description: 'Provide your business name, website, and primary service. Takes under 60 seconds — no credit card, no commitment.' },
-  { number: '02', icon: Brain,    title: 'CiteCheck scans live data',          description: 'Our engine reads your site in real time — AI crawler access, llms.txt, schema markup, and content signals — to build your actual AI trust profile.' },
+  { number: '02', icon: Brain,    title: 'VisiblyAI scans live data',          description: 'Our engine reads your site in real time — AI crawler access, llms.txt, schema markup, and content signals — to build your actual AI visibility profile.' },
   { number: '03', icon: BarChart2, title: 'Get your AI Trust Intelligence report', description: 'A full report: your AI Trust Score, competitor benchmarking, detected trust gaps, and a prioritized action plan to improve your AI recommendation visibility.' },
 ]
 
@@ -827,31 +876,31 @@ const features = [
   { icon: Zap,        title: 'AI Trust Score',                  description: 'Scored across 5 dimensions: AI Recommendation Visibility, Citation Trust Signals, Brand Authority, Content Coverage, and Technical Trust Readiness.' },
   { icon: Target,     title: 'Strategic Action Plan',           description: 'Specific recommendations ranked by impact and effort — built from your real site data, not generic templates.' },
   { icon: Clock,      title: 'Quick Wins Surfaced',             description: 'High-impact actions — some completable in under 15 minutes — identified directly from your live scan results.' },
-  { icon: Award,      title: 'Full Audit Ready',                description: 'Your CiteCheck report becomes the foundation for a full AI Trust Audit with a 90-day roadmap from our expert team.' },
+  { icon: Award,      title: 'Full Audit Ready',                description: 'Your VisiblyAI report becomes the foundation for a full AI visibility audit with a 90-day roadmap from our expert team.' },
 ]
 
 const testimonials = [
   {
-    quote: "We had strong traditional SEO but were invisible to AI search. CiteCheck showed us exactly what was missing — and results followed within weeks of fixing it.",
+    quote: "We had strong traditional SEO but were invisible to AI search. VisiblyAI showed us exactly what was missing — and results followed within weeks of fixing it.",
     name: 'James O.', role: 'CEO, Meridian Legal Group', initial: 'J',
   },
   {
-    quote: "The competitor comparison was eye-opening. Our top rival had signals we'd never considered. CiteCheck made the problem — and the solution — immediately clear.",
+    quote: "The competitor comparison was eye-opening. Our top rival had signals we'd never considered. VisiblyAI made the problem — and the solution — immediately clear.",
     name: 'Sarah K.', role: 'Head of Growth, Luminary Agency', initial: 'S',
   },
   {
-    quote: "We run a SaaS platform and AI discoverability is becoming critical. CiteCheck gave us a clear picture of where we stood and what to prioritize. Worth every minute.",
+    quote: "We run a SaaS platform and AI discoverability is becoming critical. VisiblyAI gave us a clear picture of where we stood and what to prioritize. Worth every minute.",
     name: 'Michael T.', role: 'Co-founder, Stackwell', initial: 'M',
   },
 ]
 
 const faqs = [
   { q: 'What is AI recommendation visibility?', a: "AI recommendation visibility is how often and how prominently your brand appears when AI systems like ChatGPT, Gemini, Google AI Overviews, and Perplexity generate responses to user queries. As AI-powered search becomes the primary discovery channel, visibility in these systems is becoming as important as traditional search ranking." },
-  { q: 'How does CiteCheck work?', a: "CiteCheck fetches live data directly from your website — robots.txt, llms.txt, JSON-LD schema, FAQ content, HTTPS status, and sitemap. We analyze whether AI crawlers can access your site, whether you have the trust and authority signals AI platforms require, and how your posture compares to competitors in real time." },
+  { q: 'How does VisiblyAI work?', a: "VisiblyAI fetches live data directly from your website — robots.txt, llms.txt, JSON-LD schema, FAQ content, HTTPS status, and sitemap. We run real queries against Google AI with web search grounding, analyze whether AI crawlers can access your site, and how your visibility compares to competitors." },
   { q: 'How accurate is the AI Trust Score?', a: "The score reflects real technical signals from your live website: AI crawler access (GPTBot, ClaudeBot, PerplexityBot), llms.txt presence, schema markup quality, FAQ content signals, HTTPS, and sitemap accessibility. These are the foundational factors that determine whether AI platforms can discover and trust your business." },
   { q: 'Do I need technical knowledge?', a: "None. Your report is written in clear business language. Every recommendation includes a plain-English explanation of what to do, why it matters for your AI recommendation rate, and how hard it is to implement." },
   { q: 'How is this different from SEO?', a: "Traditional SEO optimizes for search engine ranking algorithms. AI trust optimization targets the signals language models use when selecting sources for recommendations — citation authority, structured data, llms.txt, AI crawler access, and conversational content. Different systems, different signals, different outcomes." },
-  { q: 'What do I get from the free check?', a: "A full CiteCheck AI Trust Report: your score across 5 dimensions, live competitor comparison, detected trust gaps with severity ratings, and a prioritized action plan. Implement quick wins yourself, or engage our team for a Full AI Trust Audit with 90-day roadmap." },
+  { q: 'What do I get from the free check?', a: "A full VisiblyAI report: your score across 5 dimensions, real Google AI competitor comparison, detected visibility gaps with severity ratings, and a prioritized action plan. Implement quick wins yourself, or engage our team for a full AI visibility audit with 90-day roadmap." },
 ]
 
 /* ─────────────────────────────────────────────
@@ -947,7 +996,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 gap-20 items-center">
             <Section delay={0.1}>
               <div className="rounded-2xl border border-border bg-card shadow-card-md p-7 space-y-4">
-                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">What CiteCheck reads from your live site</div>
+                <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">What VisiblyAI reads from your live site</div>
                 {[
                   { icon: Lock,       label: 'AI Crawler Access',  sub: 'GPTBot, ClaudeBot, PerplexityBot permissions in robots.txt', ok: false },
                   { icon: Globe,      label: 'llms.txt File',       sub: 'AI-readable business context file at /llms.txt',            ok: false },
@@ -981,7 +1030,7 @@ export default function HomePage() {
                 structured data, citation-friendly content, and explicit AI access permissions.
               </p>
               <p className="text-muted-foreground leading-relaxed mb-8 text-base">
-                CiteCheck reads your live site and tells you exactly which signals are missing, which are strong,
+                VisiblyAI reads your live site and tells you exactly which signals are missing, which are strong,
                 and what to fix first for the highest recommendation impact.
               </p>
               <Link href="/scan">

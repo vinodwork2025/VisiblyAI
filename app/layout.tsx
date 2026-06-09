@@ -18,9 +18,9 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'CiteCheck — See If AI Trusts and Recommends Your Business',
+  title: 'VisiblyAI — See If AI Recommends Your Business',
   description:
-    'Discover how trusted and visible your business is across ChatGPT, Google AI Overviews, Gemini, and AI-powered search. Get your free AI Trust Score in minutes.',
+    'Discover how visible your business is in Google AI, ChatGPT, Gemini, and Perplexity. Run a free live AI visibility check in under 60 seconds.',
   keywords: [
     'AI citation visibility',
     'AI trust signals',
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     'AI discoverability',
   ],
   openGraph: {
-    title: 'CiteCheck — See If AI Trusts and Recommends Your Business',
+    title: 'VisiblyAI — See If AI Recommends Your Business',
     description:
-      'Run a free AI Trust Check. See how ChatGPT, Gemini, and Google AI rate your business trust and citation authority.',
+      'Run a free AI visibility check. See how Google AI, ChatGPT, Gemini, and Perplexity rate your business.',
     type: 'website',
   },
 }

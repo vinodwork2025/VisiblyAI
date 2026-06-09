@@ -4,15 +4,21 @@ import { useEffect, useState, useRef, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { CheckCircle, Zap } from 'lucide-react'
 
+// These steps reflect what the scan API actually does:
+// 1. Fetch homepage, robots.txt, llms.txt, sitemap
+// 2. Check AI crawler access (GPTBot, ClaudeBot, PerplexityBot)
+// 3. Run 5 live queries to Google AI with web search grounding
+// 4. Extract schema, meta, and content signals
+// 5. Build scored report
 const SCAN_STEPS = [
-  { id: 1, label: 'Analyzing AI trust signals…',              detail: 'Checking your website\'s AI accessibility and trust indicators' },
-  { id: 2, label: 'Checking authority indicators…',           detail: 'Evaluating llms.txt, schema markup, and AI crawler access'      },
-  { id: 3, label: 'Scanning citation consistency…',           detail: 'Reviewing structured data, reviews, and E-E-A-T signals'        },
-  { id: 4, label: 'Comparing AI recommendation patterns…',    detail: 'Benchmarking your trust signals against competitors'            },
-  { id: 5, label: 'Evaluating discoverability signals…',      detail: 'Building your personalized AI trust action plan'               },
+  { id: 1, label: 'Fetching your website…',              detail: 'Reading homepage, robots.txt, sitemap, and llms.txt' },
+  { id: 2, label: 'Checking AI crawler access…',         detail: 'Verifying GPTBot, ClaudeBot, and PerplexityBot access'  },
+  { id: 3, label: 'Querying Google AI with live search…', detail: 'Running 5 real queries with Google Search grounding'    },
+  { id: 4, label: 'Analysing schema and content signals…', detail: 'Detecting JSON-LD, FAQ content, and trust signals'    },
+  { id: 5, label: 'Building your visibility report…',     detail: 'Scoring and generating your personalised action plan'  },
 ]
 
-const STEP_DELAY = 1800
+const STEP_DELAY = 2200  // Gemini calls take ~10s total; spread steps across that
 
 function LoadingContent() {
   const router = useRouter()
@@ -45,32 +51,32 @@ function LoadingContent() {
       return () => timers.forEach(clearTimeout)
     }
 
-    // Real scan flow — call API in parallel with animation
     const formStr = typeof window !== 'undefined' ? sessionStorage.getItem('pending_scan_form') : null
     if (!formStr) { router.push('/scan'); return }
 
     let resultId: string | null = null
     let animationFinished = false
 
-    // Start API call immediately
+    // Start API call immediately — Gemini queries run in parallel with animation
     fetch('/api/scan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: formStr,
     })
       .then(r => r.json())
-      .then(result => {
-        if (!result?.id) throw new Error('bad response')
+      .then((result: { id?: string; error?: string }) => {
+        if (result?.error) throw new Error(result.error)
+        if (!result?.id) throw new Error('Invalid response')
         sessionStorage.setItem(`scan_${result.id}`, JSON.stringify(result))
         sessionStorage.setItem('last_scan_id', result.id)
         resultId = result.id
         if (animationFinished) navigateTo(result.id)
       })
-      .catch(() => {
-        if (animationFinished) router.push('/scan')
+      .catch((err: Error) => {
+        sessionStorage.setItem('scan_error', err.message ?? 'Scan failed')
+        if (animationFinished) router.push('/scan?error=1')
       })
 
-    // Run animation steps
     const timers: ReturnType<typeof setTimeout>[] = []
     SCAN_STEPS.forEach((_, i) => {
       timers.push(setTimeout(() => {
@@ -78,10 +84,8 @@ function LoadingContent() {
         if (i === SCAN_STEPS.length - 1) {
           setTimeout(() => {
             animationFinished = true
-            if (resultId) {
-              navigateTo(resultId)
-            }
-            // If API not done yet, its .then() above will call navigateTo
+            if (resultId) navigateTo(resultId)
+            // If API still running, its .then() will call navigateTo
           }, 800)
         }
       }, STEP_DELAY * (i + 1)))
@@ -103,16 +107,10 @@ function LoadingContent() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="w-32 h-32 rounded-full border border-primary/15 animate-ping" style={{ animationDuration: '2.5s', animationDelay: '0.3s' }} />
         </div>
-
         <div className="relative w-28 h-28">
           <svg className="absolute inset-0 w-full h-full animate-radar-spin" viewBox="0 0 100 100" fill="none">
             <circle cx="50" cy="50" r="46" stroke="oklch(0.76 0.14 177 / 10%)" strokeWidth="2" />
-            <path
-              d="M 50 4 A 46 46 0 0 1 96 50"
-              stroke="oklch(0.76 0.14 177)"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-            />
+            <path d="M 50 4 A 46 46 0 0 1 96 50" stroke="oklch(0.76 0.14 177)" strokeWidth="2.5" strokeLinecap="round" />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
             <div className={`w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500 ${
@@ -128,30 +126,26 @@ function LoadingContent() {
         </div>
       </div>
 
-      {/* Title */}
       <div className="text-center mb-10">
         <h1 className="font-heading font-black text-2xl md:text-3xl mb-2">
           {done ? (
             <span className="gradient-text">Analysis complete!</span>
           ) : (
-            'Scanning your business…'
+            'Scanning your AI visibility…'
           )}
         </h1>
         <p className="text-sm text-muted-foreground">
           {done
-            ? 'Redirecting you to your CiteCheck AI Trust Report…'
-            : 'Fetching live trust and citation data from your website'
+            ? 'Redirecting to your VisiblyAI report…'
+            : 'Running live queries against Google AI with web search grounding'
           }
         </p>
       </div>
 
-      {/* Steps */}
       <div className="w-full max-w-md mb-8 space-y-3">
         {SCAN_STEPS.map((step, i) => {
           const isActive    = activeStep === step.id
           const isCompleted = activeStep > step.id
-          const isPending   = activeStep < step.id
-
           return (
             <div
               key={step.id}
@@ -163,19 +157,16 @@ function LoadingContent() {
               style={{ animationDelay: `${i * 0.1}s` }}
             >
               <div className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 mt-0.5 transition-all duration-300 ${
-                isCompleted ? 'bg-primary'         :
-                isActive    ? 'bg-primary/20 border-2 border-primary' :
-                'bg-secondary border border-border'
+                isCompleted ? 'bg-primary' : isActive ? 'bg-primary/20 border-2 border-primary' : 'bg-secondary border border-border'
               }`}>
                 {isCompleted ? (
-                  <CheckCircle className="w-3.5 h-3.5 text-primary-foreground animate-step-check" />
+                  <CheckCircle className="w-3.5 h-3.5 text-primary-foreground" />
                 ) : isActive ? (
                   <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                 ) : (
                   <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
                 )}
               </div>
-
               <div className="flex-1 min-w-0">
                 <div className={`text-sm font-medium transition-colors ${
                   isCompleted ? 'text-primary' : isActive ? 'text-foreground' : 'text-muted-foreground'
@@ -183,21 +174,15 @@ function LoadingContent() {
                   {step.label}
                 </div>
                 {(isActive || isCompleted) && (
-                  <div className="text-xs text-muted-foreground mt-0.5 animate-fade-in">
-                    {step.detail}
-                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5 animate-fade-in">{step.detail}</div>
                 )}
               </div>
-
-              {isCompleted && (
-                <div className="text-xs text-primary font-medium shrink-0 animate-fade-in">✓</div>
-              )}
+              {isCompleted && <div className="text-xs text-primary font-medium shrink-0 animate-fade-in">✓</div>}
             </div>
           )
         })}
       </div>
 
-      {/* Progress bar */}
       <div className="w-full max-w-md">
         <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
           <span>Analysis progress</span>
@@ -212,7 +197,7 @@ function LoadingContent() {
       </div>
 
       <p className="text-xs text-muted-foreground mt-8 text-center max-w-xs">
-        Checking AI trust, citations, and authority signals across ChatGPT, Google AI, Gemini, and Perplexity
+        Live Google AI queries are running now — checking if your business appears in real AI search results
       </p>
     </div>
   )

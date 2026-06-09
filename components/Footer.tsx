@@ -81,7 +81,7 @@ export default function Footer() {
 
         <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} CiteCheck · Powered by{' '}
+            © {new Date().getFullYear()} VisiblyAI · Powered by{' '}
             <Link href="https://optiscale360.com" className="hover:text-foreground transition-colors">
               OptiScale Advisors
             </Link>
