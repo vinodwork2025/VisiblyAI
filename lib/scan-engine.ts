@@ -252,7 +252,7 @@ function buildInsights(data: SiteData, form: ScanFormData, gemini?: GeminiVisibi
       insights.push({
         id: uid(), platform: 'gemini',
         title: `Not mentioned in ${totalQuestions} Google AI searches`,
-        description: `Google AI (with live web search) did not mention ${businessName} in any of ${totalQuestions} test queries for ${primaryService} in ${city}. Other businesses appeared in all measured queries. This is a measurable visibility gap.`,
+        description: `Google AI (with live web search) did not mention ${businessName} in any of ${totalQuestions} test queries for ${primaryService} in ${city}. ${gemini.topCompetitors.length > 0 ? `Other businesses appeared in results instead.` : `No local competitors were cited either — the service category may have limited AI search coverage in ${city}.`} This is a measurable visibility gap.`,
         impact: 'high',
       })
     }
@@ -316,7 +316,7 @@ function buildProblems(data: SiteData, form: ScanFormData, gemini?: GeminiVisibi
     list.push({
       id: uid(),
       title: `Not appearing in Google AI searches for ${primaryService} in ${city}`,
-      description: `Measured: Google AI did not mention ${businessName} in ${gemini.totalQuestions} live queries. ${gemini.topCompetitors.length > 0 ? `Competitors appearing in your place: ${gemini.topCompetitors.slice(0, 3).map(c => c.name).join(', ')}.` : ''}`,
+      description: `Measured: Google AI did not mention ${businessName} in ${gemini.totalQuestions} live queries.${gemini.topCompetitors.length > 0 ? ` Competitors appearing in your place: ${gemini.topCompetitors.slice(0, 3).map(c => c.name).join(', ')}.` : ''}`,
       severity: 'critical', category: 'AI Visibility',
     })
   } else if (gemini && !gemini.error && gemini.appearedInCount < gemini.totalQuestions) {
