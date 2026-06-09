@@ -43,7 +43,7 @@ export default function Navbar() {
             <Zap className="w-4 h-4 text-primary-foreground" />
           </div>
           <span className="font-heading font-bold text-[17px] tracking-tight">
-            Cite<span className="text-primary">Check</span>
+            Visibly<span className="text-primary">AI</span>
           </span>
         </Link>
 
